@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cisco - Partners</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reseteo básico y fuentes */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            background-color: #f4f6f8;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px; /* Añade padding para que el contenido no toque los bordes */
+        }
+
+        /* Barra superior */
+        .top-bar {
+            height: 5px;
+            background-color: #a8b8c0; /* Color de la barra superior */
+        }
+
+        /* Header */
+        header {
+            background-color: #fff;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            position: sticky; /* Header fijo */
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a, /* Hacer el logo un enlace */
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: #005073; /* Azul Cisco */
+            letter-spacing: -1px;
+            text-decoration: none; /* Quitar subrayado si es enlace */
+        }
+
+        nav {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 18px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #4a4a4a; /* Gris oscuro para los links */
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active { /* Para una página activa */
+            color: #005073; /* Azul Cisco al pasar el ratón */
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            text-decoration: none;
+            color: #4a4a4a;
+            margin-left: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        .user-actions a:first-child {
+            margin-left: 0;
+        }
+
+        .user-actions .login-btn {
+            background-color: #0073b1; /* Azul Cisco/LATAM más estándar */
+            color: white;
+            padding: 8px 18px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-actions .login-btn:hover {
+            background-color: #005073; /* Azul más oscuro */
+        }
+
+        .user-actions .search-icon svg {
+            stroke: #4a4a4a;
+        }
+        .user-actions .search-icon:hover svg {
+            stroke: #005073;
+        }
+
+        .arrow-down {
+            font-size: 0.7em;
+            margin-left: 5px;
+        }
+
+        /* Main content (para espaciado si el header es sticky) */
+        main {
+            padding-top: 20px; /* Espacio para que el contenido no se solape con el header sticky */
+        }
+
+
+        /* Partners Section */
+        .partners-section {
+            padding: 40px 0 60px 0; /* Ajustado padding superior por el margen de 'main' */
+            background-color: #fff;
+        }
+        .partners-section h2 {
+            text-align: center;
+            font-size: 30px; /* Ajustado */
+            margin-bottom: 20px;
+            color: #005073;
+            font-weight: 700;
+        }
+        .partners-intro {
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.7;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+        }
+        .partner-benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .benefit-card {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        .benefit-icon-placeholder {
+            font-size: 14px;
+            color: #0073b1;
+            margin-bottom: 15px;
+            font-weight: 500;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .benefit-card h4 {
+            font-size: 20px;
+            color: #005073;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .benefit-card p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+        .partner-cta {
+            text-align: center;
+        }
+        .btn-primary, .btn-secondary {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            margin: 10px 5px;
+            min-width: 180px;
+            box-sizing: border-box;
+        }
+        .btn-primary {
+            background-color: #0073b1;
+            color: #fff;
+            border: 1px solid #0073b1;
+        }
+        .btn-primary:hover {
+            background-color: #005073;
+            border-color: #005073;
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: #0073b1;
+            border: 1px solid #0073b1;
+        }
+        .btn-secondary:hover {
+            background-color: #e6f3f9;
+            color: #005073;
+            border-color: #005073;
+        }
+
+        /* Footer (opcional, pero útil para una página completa) */
+        footer {
+            background-color: #333a40;
+            color: #adb5bd;
+            padding: 50px 0 30px;
+            font-size: 14px;
+            margin-top: 40px; /* Espacio antes del footer */
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-links h4 {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            line-height: 2.0;
+            transition: color 0.3s ease, padding-left 0.3s ease;
+        }
+
+        .footer-links ul li a:hover {
+            color: #fff;
+            padding-left: 5px;
+        }
+
+        .social-media a {
+            color: #adb5bd;
+            margin-right: 15px;
+            font-size: 18px;
+            text-decoration: none;
+        }
+        .social-media a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #495057;
+            font-size: 13px;
+            color: #868e96;
+        }
+        .copyright a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+        .copyright a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            header .container {
+                flex-wrap: wrap;
+            }
+            nav {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+                margin-top: 15px;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            nav ul {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+            }
+            nav ul li {
+                margin: 0 12px;
+            }
+            .user-actions {
+                margin-left: auto;
+            }
+            .partners-section h2 {
+                font-size: 26px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 10px; }
+            .logo a, .logo { font-size: 28px; }
+            .user-actions .lang-selector, .user-actions .login-btn { display: none; }
+            .partners-intro {
+                font-size: 16px;
+            }
+            .partner-benefits-grid, .footer-links { grid-template-columns: 1fr; }
+             .btn-primary, .btn-secondary {
+                display: block;
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+         @media (max-width: 480px) {
+            .logo a, .logo { font-size: 22px; }
+            nav ul li { margin: 0 8px; }
+            nav ul li a { font-size: 13px; }
+            .user-actions a { margin-left: 10px; }
+            .partners-section {
+                padding-top: 20px; /* Menos padding en móvil */
+            }
+            .partners-section h2 {
+                font-size: 22px;
+            }
+            .benefit-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar"></div>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">CISCO</a>
+            </div>
+            <nav>
+                <ul>
+              
+                    <li><a href="index.html">Productos</a></li>
+                    <li><a href="soluciones.html">Soluciones</a></li> 
+                    <li><a href="soporte.html">Soporte</a></li>  
+                    <li><a href="partners.html" class="active">Partners</a></li> 
+                    <li><a href="comunidad.html">Comunidad</a></li> 
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <a href="#" class="lang-selector">ES <span class="arrow-down">▼</span></a>
+                <a href="#" class="login-btn">Iniciar Sesión</a>
+                <a href="#" class="search-icon" aria-label="Buscar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="partners-section">
+            <div class="container">
+                <h2>LIDERES DEL PROYECTO</h2>
+                <p class="partners-intro">Únete a nuestro ecosistema de partners y accede a beneficios exclusivos, recursos y oportunidades para crecer tu negocio con las soluciones líderes de la industria.</p>
+                <div class="partner-benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon-placeholder">CPP</div>
+                        <h4>LUIS EDUARDO</h4>
+                        <p>Expande tu alcance y accede a nuevos mercados con el respaldo de Cisco.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon-placeholder">PPC</div>
+                        <h4>LISS MOZOMBITE</h4>
+                        <p>Capacitación de clase mundial, herramientas de marketing y soporte técnico especializado.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon-placeholder">CPP</div>
+                        <h4>JUAN JOSE</h4>
+                        <p>Sé parte de la vanguardia tecnológica y ofrece soluciones de futuro a tus clientes.</p>
+                    </div>
+                </div>
+
+                    <h2>EQUIPO TI</h2>
+
+                <div class="partner-benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon-placeholder">CPP</div>
+                        <h4>MARK LANDEO</h4>
+                        <p>Expande tu alcance y accede a nuevos mercados con el respaldo de Cisco.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon-placeholder">PPC</div>
+                        <h4>MEDALITH BECERRIL</h4>
+                        <p>Capacitación de clase mundial, herramientas de marketing y soporte técnico especializado.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon-placeholder">CPP</div>
+                        <h4>DIEGO ALONSO</h4>
+                        <p>Sé parte de la vanguardia tecnológica y ofrece soluciones de futuro a tus clientes.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-icon-placeholder">CPP</div>
+                        <h4>AARON LOPEZ</h4>
+                        <p>Expande tu alcance y accede a nuevos mercados con el respaldo de Cisco.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon-placeholder">PPC</div>
+                        <h4>ROMULO PANDURO</h4>
+                        <p>Capacitación de clase mundial, herramientas de marketing y soporte técnico especializado.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon-placeholder">CPP</div>
+                        <h4>LESTER SAMUEL</h4>
+                        <p>Sé parte de la vanguardia tecnológica y ofrece soluciones de futuro a tus clientes.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon-placeholder"></div>
+                        <h4>VER MAS...</h4>
+                    </div>
+                </div>
+                
+                </div>
+
+                    
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <div>
+                    <h4>Acerca de Cisco</h4>
+                    <ul>
+                        <li><a href="#">Quiénes Somos</a></li>
+                        <li><a href="#">Noticias</a></li>
+                        <li><a href="#">Carreras</a></li>
+                        <li><a href="#">Inversores</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li><a href="#">Contactar Soporte</a></li>
+                        <li><a href="#">Descargas</a></li>
+                        <li><a href="#">Comunidad</a></li>
+                        <li><a href="#">Documentación</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#">Blogs</a></li>
+                        <li><a href="#">Eventos</a></li>
+                        <li><a href="partners.html">Partners</a></li>
+                        <li><a href="#">Desarrolladores</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Síguenos</h4>
+                    <div class="social-media">
+                        <a href="#" aria-label="Facebook">FB</a>
+                        <a href="#" aria-label="Twitter">TW</a>
+                        <a href="#" aria-label="LinkedIn">LI</a>
+                        <a href="#" aria-label="YouTube">YT</a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2023 Cisco Systems, Inc. y/o sus filiales. Todos los derechos reservados. | <a href="#">Privacidad</a> | <a href="#">Términos</a> | <a href="#">Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
