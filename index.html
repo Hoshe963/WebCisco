@@ -1,12 +1,124 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es"> <!-- El lang se actualizará con JS -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cisco Soluciones - Inspirado en LATAM</title>
+    <title data-translate-key="pageTitle">Cisco Soluciones - Inspirado en LATAM</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
+        /* === ESTILOS PARA EL MODAL DE LOGIN === */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease;
+        }
+        .login-modal {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-out;
+        }
+        .modal-overlay.active .login-modal {
+            transform: translateY(0);
+        }
+        .login-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+        .login-modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #005073;
+        }
+        .close-modal-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #777;
+            line-height: 1;
+        }
+        .close-modal-btn:hover {
+            color: #333;
+        }
+        .login-form-group {
+            margin-bottom: 20px;
+        }
+        .login-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        .login-form-group input[type="email"],
+        .login-form-group input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+        .login-form-group input[type="email"]:focus,
+        .login-form-group input[type="password"]:focus {
+            border-color: #0073b1;
+            box-shadow: 0 0 0 0.2rem rgba(0,115,177,.25);
+            outline: none;
+        }
+        .login-submit-modal-btn {
+            background-color: #0073b1;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .login-submit-modal-btn:hover {
+            background-color: #005073;
+        }
+        .login-modal-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .login-modal-footer a {
+            color: #0073b1;
+            text-decoration: none;
+        }
+        .login-modal-footer a:hover {
+            text-decoration: underline;
+        }
+        /* === FIN ESTILOS MODAL === */
+
         /* Reseteo básico y fuentes */
         body, html {
             margin: 0;
@@ -88,16 +200,24 @@
             display: flex;
             align-items: center;
         }
-
-        .user-actions a {
+        
+        .user-actions a, 
+        .user-actions .login-btn,
+        .user-actions .language-selector button {
             text-decoration: none;
             color: #4a4a4a;
             margin-left: 20px;
             font-size: 14px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-family: inherit;
         }
-        .user-actions a:first-child {
+        .user-actions a:first-child,
+        .user-actions .language-selector:first-child {
             margin-left: 0;
         }
 
@@ -108,497 +228,137 @@
             border-radius: 4px;
             font-weight: 500;
             transition: background-color 0.3s ease;
+            border: none; 
+            font-family: inherit; 
+            line-height: normal; 
+            text-decoration: none; 
+            justify-content: center; 
+            -webkit-appearance: none; 
+            -moz-appearance: none; 
+            appearance: none; 
         }
+        .user-actions .login-btn:hover { background-color: #005073; }
 
-        .user-actions .login-btn:hover {
-            background-color: #005073;
+        /* Estilos para el Dropdown de Idioma */
+        .language-selector {
+            position: relative;
+            margin-left: 20px;
         }
+        .language-selector .current-lang-btn {
+            padding: 8px 10px;
+            border: 1px solid transparent;
+        }
+        .language-selector .current-lang-btn:hover,
+        .language-selector .current-lang-btn:focus {
+            color: #005073;
+        }
+        .language-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1001;
+            min-width: 120px;
+            padding: 5px 0;
+        }
+        .language-selector:hover .language-dropdown,
+        .language-selector .current-lang-btn:focus + .language-dropdown,
+        .language-dropdown:hover {
+            display: block;
+        }
+        .language-dropdown a {
+            display: block;
+            padding: 8px 15px;
+            text-decoration: none;
+            color: #4a4a4a;
+            font-size: 14px;
+            margin-left: 0 !important;
+        }
+        .language-dropdown a:hover {
+            background-color: #f4f6f8;
+            color: #005073;
+        }
+        .language-dropdown a.selected-lang-item {
+            font-weight: 700;
+            color: #005073;
+        }
+        .arrow-down { font-size: 0.7em; margin-left: 5px; }
 
-        .user-actions .search-icon svg,
-        .social-media svg { /* Estilo común para SVGs de iconos */
-            stroke: #4a4a4a;
-            fill: none; /* Asegurar que no haya relleno por defecto si no se desea */
-            transition: stroke 0.3s ease, fill 0.3s ease;
-        }
-        .user-actions .search-icon:hover svg,
-        .social-media a:hover svg {
-            stroke: #005073;
-        }
-        .social-media a:hover svg { /* Específico para iconos sociales en footer */
-            fill: #005073; /* O el color que prefieras para el hover */
-            stroke: #005073;
-        }
-
-
-        .arrow-down {
-            font-size: 0.7em;
-            margin-left: 5px;
-        }
+        .user-actions .search-icon svg { stroke: #4a4a4a; fill: none; transition: stroke 0.3s ease, fill 0.3s ease; }
+        .user-actions .search-icon:hover svg { stroke: #005073; }
+        .social-media a:hover svg { fill: #fff; stroke: #fff; }
 
         /* Hero Section */
-        .hero {
-            background-image: linear-gradient(rgba(0, 80, 115, 0.6), rgba(0, 40, 60, 0.8)), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            padding: 80px 0;
-            color: white;
-            text-align: center;
-            margin-top: 0;
-        }
-
-        .hero-content {
-            max-width: 750px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-        .hero-subtitle {
-            font-size: 18px;
-            margin-bottom: 30px;
-            font-weight: 300;
-            opacity: 0.9;
-        }
-
-        .search-box {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            color: #333;
-            text-align: left;
-        }
-
-        .search-tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .search-tabs .tab-btn {
-            background: none;
-            border: none;
-            padding: 12px 15px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 500;
-            color: #555;
-            border-bottom: 3px solid transparent;
-            margin-right: 10px;
-            transition: color 0.3s ease, border-bottom-color 0.3s ease;
-        }
-
-        .search-tabs .tab-btn.active,
-        .search-tabs .tab-btn:hover {
-            color: #005073;
-            border-bottom-color: #005073;
-        }
-
-        .search-form .form-group {
-            margin-bottom: 15px;
-        }
-
-        .search-form input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 15px;
-        }
-        .search-form input[type="text"]:focus {
-            border-color: #0073b1;
-            box-shadow: 0 0 0 0.2rem rgba(0,115,177,.25);
-            outline: none;
-        }
-
-        .search-submit-btn {
-            background-color: #0073b1;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s ease;
-        }
-
-        .search-submit-btn:hover {
-            background-color: #005073;
-        }
-
-        .quick-links {
-            margin-top: 15px;
-            text-align: center;
-            font-size: 14px;
-        }
-        .quick-links a {
-            color: #005073;
-            text-decoration: none;
-            margin: 0 5px;
-        }
-        .quick-links a:hover {
-            text-decoration: underline;
-        }
-
-        /* Estilo común para títulos de sección */
-        .section-title {
-            text-align: center;
-            font-size: 30px;
-            margin-bottom: 40px;
-            color: #005073;
-            font-weight: 700;
-        }
-        .section-subtitle { /* Para subtítulos opcionales debajo del título principal de sección */
-            text-align: center;
-            font-size: 18px;
-            line-height: 1.7;
-            color: #555;
-            max-width: 800px;
-            margin: -20px auto 40px auto; /* Ajustar si se usa con .section-title */
-        }
-
-
-        /* Promo Cards Section */
-        .promo-cards, .customer-success-section, .latest-news-section {
-            padding: 60px 0;
-        }
-        .promo-cards, .latest-news-section { /* Fondos alternos */
-             background-color: #f9f9f9;
-        }
-        .customer-success-section {
-            background-color: #fff;
-        }
-
-
-        .cards-grid, .success-grid, .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .card, .success-story-card, .news-card {
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover, .success-story-card:hover, .news-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-        }
-
-        .card img, .news-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .card h3, .success-story-card h3, .news-card h3 {
-            font-size: 20px;
-            color: #005073;
-            margin: 15px 20px 10px;
-            font-weight: 700;
-        }
-
-        .card p, .success-story-card p, .news-card p {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #555;
-            margin: 0 20px 15px;
-            flex-grow: 1;
-        }
-        .news-card .news-date {
-            font-size: 13px;
-            color: #777;
-            margin: -5px 20px 10px;
-        }
-
-
-        .card .card-link, .success-story-card .card-link, .news-card .card-link {
-            display: inline-block;
-            margin: 0 20px 20px;
-            color: #0073b1;
-            text-decoration: none;
-            font-weight: 500;
-            align-self: flex-start;
-        }
-
-        .card .card-link:hover, .success-story-card .card-link:hover, .news-card .card-link:hover {
-            text-decoration: underline;
-            color: #005073;
-        }
-
-        /* Customer Success Section Specifics */
-        .success-story-card .client-logo-placeholder {
-            height: 50px;
-            width: 150px;
-            background-color: #e0e0e0;
-            margin: 20px auto 10px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #777;
-            font-size: 14px;
-        }
-         .success-story-card h3 {
-            text-align: center;
-         }
-        .success-story-card p {
-            text-align: center;
-            font-style: italic;
-        }
-        .success-story-card .card-link {
-            align-self: center;
-        }
-
-
-        /* Partners Section */
-        .partners-section {
-            padding: 60px 0;
-            background-color: #fff; /* Fondo blanco para esta sección */
-        }
-        .partners-section h2 { /* Ya definido por .section-title */
-            /* text-align: center;
-            font-size: 30px;
-            margin-bottom: 20px;
-            color: #005073;
-            font-weight: 700; */
-        }
-        .partners-intro { /* Ya definido por .section-subtitle */
-            /* text-align: center;
-            font-size: 18px;
-            line-height: 1.7;
-            color: #555;
-            max-width: 800px;
-            margin: 0 auto 40px auto; */
-        }
-        .partner-benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        .benefit-card {
-            background-color: #f9f9f9;
-            padding: 30px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid #e0e0e0;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .benefit-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-        }
-        .benefit-icon { /* Contenedor para el SVG */
-            color: #0073b1;
-            margin-bottom: 15px;
-            height: 40px; /* Altura del icono */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .benefit-icon svg {
-            width: 36px; /* Tamaño del SVG */
-            height: 36px;
-            fill: #0073b1; /* Color del icono */
-        }
-
-        .benefit-card h4 {
-            font-size: 20px;
-            color: #005073;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        .benefit-card p {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #555;
-        }
-        .partner-cta {
-            text-align: center;
-        }
-        .btn-primary, .btn-secondary {
-            display: inline-block;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: 500;
-            border-radius: 4px;
-            text-decoration: none;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-            margin: 10px 5px;
-            min-width: 180px;
-            box-sizing: border-box;
-        }
-        .btn-primary {
-            background-color: #0073b1;
-            color: #fff;
-            border: 1px solid #0073b1;
-        }
-        .btn-primary:hover {
-            background-color: #005073;
-            border-color: #005073;
-        }
-        .btn-secondary {
-            background-color: transparent;
-            color: #0073b1;
-            border: 1px solid #0073b1;
-        }
-        .btn-secondary:hover {
-            background-color: #e6f3f9;
-            color: #005073;
-            border-color: #005073;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #333a40;
-            color: #adb5bd;
-            padding: 50px 0 30px;
-            font-size: 14px;
-        }
-
-        .footer-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .footer-links h4 {
-            color: #fff;
-            font-size: 16px;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        .footer-links ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-links ul li a {
-            color: #adb5bd;
-            text-decoration: none;
-            line-height: 2.0;
-            transition: color 0.3s ease, padding-left 0.3s ease;
-        }
-
-        .footer-links ul li a:hover {
-            color: #fff;
-            padding-left: 5px;
-        }
-
-        .social-media {
-            display: flex; /* Para alinear los iconos */
-        }
-        .social-media a {
-            color: #adb5bd;
-            margin-right: 15px;
-            font-size: 18px; /* El tamaño del SVG se controla por width/height en el SVG */
-            text-decoration: none;
-            display: inline-block; /* Para que el hover funcione bien */
-        }
-         .social-media a svg {
-            width: 20px;
-            height: 20px;
-            fill: #adb5bd; /* Color inicial de los iconos sociales */
-            stroke: none; /* Sin borde para estos iconos */
-            transition: fill 0.3s ease;
-        }
-        .social-media a:hover svg {
-            fill: #fff; /* Color al pasar el ratón */
-        }
-
-
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid #495057;
-            font-size: 13px;
-            color: #868e96;
-        }
-        .copyright a {
-            color: #adb5bd;
-            text-decoration: none;
-        }
-        .copyright a:hover {
-            text-decoration: underline;
-            color: #fff;
-        }
+        .hero { background-image: linear-gradient(rgba(0, 80, 115, 0.6), rgba(0, 40, 60, 0.8)), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; padding: 80px 0; color: white; text-align: center; margin-top: 0; }
+        .hero-content { max-width: 750px; margin: 0 auto; }
+        .hero h1 { font-size: 42px; margin-bottom: 15px; font-weight: 700; line-height: 1.2; }
+        .hero-subtitle { font-size: 18px; margin-bottom: 30px; font-weight: 300; opacity: 0.9; }
+        .search-box { background-color: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); color: #333; text-align: left; }
+        .search-tabs { display: flex; margin-bottom: 20px; border-bottom: 1px solid #e0e0e0; }
+        .search-tabs .tab-btn { background: none; border: none; padding: 12px 15px; cursor: pointer; font-size: 15px; font-weight: 500; color: #555; border-bottom: 3px solid transparent; margin-right: 10px; transition: color 0.3s ease, border-bottom-color 0.3s ease; }
+        .search-tabs .tab-btn.active, .search-tabs .tab-btn:hover { color: #005073; border-bottom-color: #005073; }
+        .search-form .form-group { margin-bottom: 15px; }
+        .search-form input[type="text"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 15px; }
+        .search-form input[type="text"]:focus { border-color: #0073b1; box-shadow: 0 0 0 0.2rem rgba(0,115,177,.25); outline: none; }
+        .search-submit-btn { background-color: #0073b1; color: white; border: none; padding: 12px 25px; font-size: 16px; font-weight: 700; border-radius: 4px; cursor: pointer; width: 100%; transition: background-color 0.3s ease; }
+        .search-submit-btn:hover { background-color: #005073; }
+        .quick-links { margin-top: 15px; text-align: center; font-size: 14px; }
+        .quick-links a { color: #005073; text-decoration: none; margin: 0 5px; }
+        .quick-links a:hover { text-decoration: underline; }
+        .section-title { text-align: center; font-size: 30px; margin-bottom: 40px; color: #005073; font-weight: 700; }
+        .section-subtitle { text-align: center; font-size: 18px; line-height: 1.7; color: #555; max-width: 800px; margin: -20px auto 40px auto; }
+        .promo-cards, .customer-success-section, .latest-news-section { padding: 60px 0; }
+        .promo-cards, .latest-news-section { background-color: #f9f9f9; }
+        .customer-success-section { background-color: #fff; }
+        .cards-grid, .success-grid, .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card, .success-story-card, .news-card { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; }
+        .card:hover, .success-story-card:hover, .news-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        .card img, .news-card img { width: 100%; height: 200px; object-fit: cover; }
+        .card h3, .success-story-card h3, .news-card h3 { font-size: 20px; color: #005073; margin: 15px 20px 10px; font-weight: 700; }
+        .card p, .success-story-card p, .news-card p { font-size: 15px; line-height: 1.6; color: #555; margin: 0 20px 15px; flex-grow: 1; }
+        .news-card .news-date { font-size: 13px; color: #777; margin: -5px 20px 10px; }
+        .card .card-link, .success-story-card .card-link, .news-card .card-link { display: inline-block; margin: 0 20px 20px; color: #0073b1; text-decoration: none; font-weight: 500; align-self: flex-start; }
+        .card .card-link:hover, .success-story-card .card-link:hover, .news-card .card-link:hover { text-decoration: underline; color: #005073; }
+        .success-story-card .client-logo-placeholder { height: 50px; width: 150px; background-color: #e0e0e0; margin: 20px auto 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; }
+        .success-story-card h3 { text-align: center; }
+        .success-story-card p { text-align: center; font-style: italic; }
+        .success-story-card .card-link { align-self: center; }
+        .partners-section { padding: 60px 0; background-color: #fff; }
+        .partner-benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .benefit-card { background-color: #f9f9f9; padding: 30px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .benefit-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        .benefit-icon { color: #0073b1; margin-bottom: 15px; height: 40px; display: flex; align-items: center; justify-content: center; }
+        .benefit-icon svg { width: 36px; height: 36px; fill: #0073b1; }
+        .benefit-card h4 { font-size: 20px; color: #005073; margin-bottom: 10px; font-weight: 700; }
+        .benefit-card p { font-size: 15px; line-height: 1.6; color: #555; }
+        .partner-cta { text-align: center; }
+        .btn-primary, .btn-secondary { display: inline-block; padding: 12px 25px; font-size: 16px; font-weight: 500; border-radius: 4px; text-decoration: none; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; margin: 10px 5px; min-width: 180px; box-sizing: border-box; }
+        .btn-primary { background-color: #0073b1; color: #fff; border: 1px solid #0073b1; }
+        .btn-primary:hover { background-color: #005073; border-color: #005073; }
+        .btn-secondary { background-color: transparent; color: #0073b1; border: 1px solid #0073b1; }
+        .btn-secondary:hover { background-color: #e6f3f9; color: #005073; border-color: #005073; }
+        footer { background-color: #333a40; color: #adb5bd; padding: 50px 0 30px; font-size: 14px; }
+        .footer-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .footer-links h4 { color: #fff; font-size: 16px; margin-bottom: 15px; font-weight: 500; }
+        .footer-links ul { list-style: none; padding: 0; margin: 0; }
+        .footer-links ul li a { color: #adb5bd; text-decoration: none; line-height: 2.0; transition: color 0.3s ease, padding-left 0.3s ease; }
+        .footer-links ul li a:hover { color: #fff; padding-left: 5px; }
+        .social-media { display: flex; }
+        .social-media a { color: #adb5bd; margin-right: 15px; text-decoration: none; display: inline-block; }
+        .social-media a svg { width: 20px; height: 20px; fill: #adb5bd; stroke: none; transition: fill 0.3s ease; }
+        .social-media a:hover svg { fill: #fff; }
+        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid #495057; font-size: 13px; color: #868e96; }
+        .copyright a { color: #adb5bd; text-decoration: none; }
+        .copyright a:hover { text-decoration: underline; color: #fff; }
 
         /* Responsive adjustments */
-        @media (max-width: 992px) {
-            header .container {
-                flex-wrap: wrap;
-            }
-            nav {
-                order: 3;
-                width: 100%;
-                justify-content: flex-start;
-                margin-top: 15px;
-                overflow-x: auto;
-                padding-bottom: 10px;
-            }
-            nav ul {
-                justify-content: flex-start;
-                flex-wrap: nowrap;
-            }
-            nav ul li {
-                margin: 0 12px;
-            }
-            .user-actions {
-                margin-left: auto;
-            }
-            .hero h1 { font-size: 34px; }
-            .hero-subtitle { font-size: 16px; }
-            .section-title { font-size: 26px; }
-        }
-
-        @media (max-width: 768px) {
-            .container { padding: 0 10px; }
-            .logo { font-size: 28px; }
-            .user-actions .lang-selector, .user-actions .login-btn { display: none; }
-            .hero h1 { font-size: 28px; }
-            .search-box { padding: 20px; }
-            .search-tabs .tab-btn { font-size: 14px; padding: 10px 10px; }
-            .cards-grid, .partner-benefits-grid, .success-grid, .news-grid { grid-template-columns: 1fr; }
-            .footer-links { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
-             .btn-primary, .btn-secondary {
-                display: block;
-                width: 100%;
-                margin-left: 0;
-                margin-right: 0;
-            }
-        }
-         @media (max-width: 480px) {
-            .logo { font-size: 22px; }
-            nav ul li { margin: 0 8px; }
-            nav ul li a { font-size: 13px; }
-            .user-actions a { margin-left: 10px; }
-            .hero { padding: 50px 0; }
-            .hero h1 { font-size: 24px; }
-            .search-submit-btn { padding: 12px; font-size: 15px; }
-            .section-title { font-size: 22px; }
-            .card h3, .success-story-card h3, .news-card h3 { font-size: 18px; }
-            .card p, .success-story-card p, .news-card p { font-size: 14px; }
-            .partners-intro, .section-subtitle { font-size: 15px; }
-            .benefit-card { padding: 20px; }
-        }
+        @media (max-width: 992px) { header .container { flex-wrap: wrap; } nav { order: 3; width: 100%; justify-content: flex-start; margin-top: 15px; overflow-x: auto; padding-bottom: 10px; } nav ul { justify-content: flex-start; flex-wrap: nowrap; } nav ul li { margin: 0 12px; } .user-actions { margin-left: auto; } .hero h1 { font-size: 34px; } .hero-subtitle { font-size: 16px; } .section-title { font-size: 26px; } }
+        @media (max-width: 768px) { .container { padding: 0 10px; } .logo { font-size: 28px; } .user-actions .language-selector, .user-actions .login-btn { display: none; } .hero h1 { font-size: 28px; } .search-box { padding: 20px; } .search-tabs .tab-btn { font-size: 14px; padding: 10px 10px; } .cards-grid, .partner-benefits-grid, .success-grid, .news-grid { grid-template-columns: 1fr; } .footer-links { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); } .btn-primary, .btn-secondary { display: block; width: 100%; margin-left: 0; margin-right: 0; } }
+        @media (max-width: 480px) { .logo { font-size: 22px; } nav ul li { margin: 0 8px; } nav ul li a { font-size: 13px; } .user-actions a { margin-left: 10px; } .hero { padding: 50px 0; } .hero h1 { font-size: 24px; } .search-submit-btn { padding: 12px; font-size: 15px; } .section-title { font-size: 22px; } .card h3, .success-story-card h3, .news-card h3 { font-size: 18px; } .card p, .success-story-card p, .news-card p { font-size: 14px; } .partners-intro, .section-subtitle { font-size: 15px; } .benefit-card { padding: 20px; } }
     </style>
 </head>
 <body>
@@ -610,16 +370,26 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="#" class="active">Productos</a></li>
-                    <li><a href="/soluciones.html"">Soluciones</a></li>
-                    <li><a href="/soporte.html">Soporte</a></li>
-                    <li><a href="/patners.html">Partners</a></li>
-                    <li><a href="/comunidad.html">Comunidad</a></li>
+                    <li><a href="index.html" class="active" data-translate-key="navProducts">Productos</a></li>
+                    <li><a href="soluciones.html" data-translate-key="navSolutions">Soluciones</a></li>
+                    <li><a href="soporte.html" data-translate-key="navSupport">Soporte</a></li>
+                    <li><a href="partners.html" data-translate-key="navPartners">Partners</a></li>
+                    <li><a href="comunidad.html" data-translate-key="navCommunity">Comunidad</a></li>
                 </ul>
             </nav>
             <div class="user-actions">
-                <a href="#" class="lang-selector">ES <span class="arrow-down">▼</span></a>
-                <a href="#" class="login-btn">Iniciar Sesión</a>
+                <!-- Selector de Idioma -->
+                <div class="language-selector">
+                    <button type="button" class="current-lang-btn" id="currentLangBtn" aria-haspopup="true" aria-expanded="false">
+                        <span id="selectedLangText">ES</span> <span class="arrow-down">▼</span>
+                    </button>
+                    <div class="language-dropdown" id="languageDropdown">
+                        <a href="#" data-lang="es">Español</a>
+                        <a href="#" data-lang="en">English</a>
+                        <a href="#" data-lang="pt">Português</a>
+                    </div>
+                </div>
+                <button type="button" class="login-btn" id="openLoginModalBtn" data-translate-key="loginButton">Iniciar Sesión</button>
                 <a href="#" class="search-icon" aria-label="Buscar">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 </a>
@@ -630,25 +400,25 @@
     <main>
         <section class="hero">
             <div class="hero-content" data-aos="fade-in" data-aos-delay="200">
-                <h1>Descubre el Futuro de la Red con Cisco</h1>
-                <p class="hero-subtitle">Soluciones innovadoras para un mundo conectado y seguro.</p>
+                <h1 data-translate-key="heroTitle">Descubre el Futuro de la Red con Cisco</h1>
+                <p class="hero-subtitle" data-translate-key="heroSubtitle">Soluciones innovadoras para un mundo conectado y seguro.</p>
                 <div class="search-box">
                     <div class="search-tabs">
-                        <button class="tab-btn active" data-placeholder="Ej: SD-WAN, Seguridad Cloud, Webex...">Buscar Soluciones</button>
-                        <button class="tab-btn" data-placeholder="Ej: Catalyst 9000, Meraki MR, Webex Room Kit...">Consultar Productos</button>
-                        <button class="tab-btn" data-placeholder="Ej: Guías de configuración, Hojas de datos...">Recursos Técnicos</button>
+                        <button class="tab-btn active" data-placeholder-es="Ej: SD-WAN, Seguridad Cloud, Webex..." data-placeholder-en="Ex: SD-WAN, Cloud Security, Webex..." data-placeholder-pt="Ex: SD-WAN, Segurança na Nuvem, Webex..." data-translate-key="searchTabSolutions">Buscar Soluciones</button>
+                        <button class="tab-btn" data-placeholder-es="Ej: Catalyst 9000, Meraki MR, Webex Room Kit..." data-placeholder-en="Ex: Catalyst 9000, Meraki MR, Webex Room Kit..." data-placeholder-pt="Ex: Catalyst 9000, Meraki MR, Webex Room Kit..." data-translate-key="searchTabProducts">Consultar Productos</button>
+                        <button class="tab-btn" data-placeholder-es="Ej: Guías de configuración, Hojas de datos..." data-placeholder-en="Ex: Configuration guides, Datasheets..." data-placeholder-pt="Ex: Guias de configuração, Folhas de dados..." data-translate-key="searchTabResources">Recursos Técnicos</button>
                     </div>
                     <form class="search-form">
                         <div class="form-group">
                             <input type="text" id="search-main" placeholder="Ej: SD-WAN, Seguridad Cloud, Webex...">
                         </div>
-                        <button type="submit" class="search-submit-btn">Buscar Ahora</button>
+                        <button type="submit" class="search-submit-btn" data-translate-key="searchButton">Buscar Ahora</button>
                     </form>
                     <div class="quick-links">
-                        <a href="#">Networking</a> |
-                        <a href="#">Seguridad</a> |
-                        <a href="#">Colaboración</a> |
-                        <a href="#">Data Center</a>
+                        <a href="#" data-translate-key="quickLinkNetworking">Networking</a> |
+                        <a href="#" data-translate-key="quickLinkSecurity">Seguridad</a> |
+                        <a href="#" data-translate-key="quickLinkCollaboration">Colaboración</a> |
+                        <a href="#" data-translate-key="quickLinkDataCenter">Data Center</a>
                     </div>
                 </div>
             </div>
@@ -656,25 +426,25 @@
 
         <section class="promo-cards">
             <div class="container">
-                <h2 class="section-title" data-aos="fade-up">Innovaciones Destacadas de Cisco</h2>
+                <h2 class="section-title" data-aos="fade-up" data-translate-key="promoTitle">Innovaciones Destacadas de Cisco</h2>
                 <div class="cards-grid">
                     <div class="card" data-aos="fade-up" data-aos-delay="100">
                         <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Soluciones Cloud">
-                        <h3>Soluciones Cloud Híbridas</h3>
-                        <p>Integra y gestiona tus entornos cloud con la flexibilidad y seguridad que necesitas.</p>
-                        <a href="#" class="card-link">Descubre Más →</a>
+                        <h3 data-translate-key="promoCard1Title">Soluciones Cloud Híbridas</h3>
+                        <p data-translate-key="promoCard1Desc">Integra y gestiona tus entornos cloud con la flexibilidad y seguridad que necesitas.</p>
+                        <a href="#" class="card-link" data-translate-key="learnMoreLink">Descubre Más →</a>
                     </div>
                     <div class="card" data-aos="fade-up" data-aos-delay="200">
                         <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Seguridad de Red">
-                        <h3>Seguridad de Red Avanzada</h3>
-                        <p>Protege tu infraestructura crítica con nuestras soluciones de ciberseguridad de última generación.</p>
-                        <a href="#" class="card-link">Ver Soluciones →</a>
+                        <h3 data-translate-key="promoCard2Title">Seguridad de Red Avanzada</h3>
+                        <p data-translate-key="promoCard2Desc">Protege tu infraestructura crítica con nuestras soluciones de ciberseguridad de última generación.</p>
+                        <a href="#" class="card-link" data-translate-key="viewSolutionsLink">Ver Soluciones →</a>
                     </div>
                     <div class="card" data-aos="fade-up" data-aos-delay="300">
                         <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Colaboración Inteligente">
-                        <h3>Colaboración Inteligente</h3>
-                        <p>Transforma la forma en que tus equipos trabajan juntos con Webex y nuestras herramientas.</p>
-                        <a href="#" class="card-link">Explorar Webex →</a>
+                        <h3 data-translate-key="promoCard3Title">Colaboración Inteligente</h3>
+                        <p data-translate-key="promoCard3Desc">Transforma la forma en que tus equipos trabajan juntos con Webex y nuestras herramientas.</p>
+                        <a href="#" class="card-link" data-translate-key="exploreWebexLink">Explorar Webex →</a>
                     </div>
                 </div>
             </div>
@@ -682,26 +452,26 @@
 
         <section class="customer-success-section">
             <div class="container">
-                <h2 class="section-title" data-aos="fade-up">Casos de Éxito de Nuestros Clientes</h2>
-                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Vea cómo hemos ayudado a empresas como la suya a alcanzar sus objetivos.</p>
+                <h2 class="section-title" data-aos="fade-up" data-translate-key="successTitle">Casos de Éxito de Nuestros Clientes</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100" data-translate-key="successSubtitle">Vea cómo hemos ayudado a empresas como la suya a alcanzar sus objetivos.</p>
                 <div class="success-grid">
                     <div class="success-story-card" data-aos="fade-up" data-aos-delay="200">
                         <div class="client-logo-placeholder">Logo Empresa Alfa</div>
-                        <h3>Transformación Digital en Retail</h3>
-                        <p>"Las soluciones de Cisco nos permitieron optimizar nuestra red y mejorar la experiencia del cliente en un 30%."</p>
-                        <a href="#" class="card-link">Leer Caso Completo →</a>
+                        <h3 data-translate-key="successStory1Title">Transformación Digital en Retail</h3>
+                        <p data-translate-key="successStory1Desc">"Las soluciones de Cisco nos permitieron optimizar nuestra red y mejorar la experiencia del cliente en un 30%."</p>
+                        <a href="#" class="card-link" data-translate-key="readFullCaseLink">Leer Caso Completo →</a>
                     </div>
                     <div class="success-story-card" data-aos="fade-up" data-aos-delay="300">
                         <div class="client-logo-placeholder">Logo Banco Beta</div>
-                        <h3>Seguridad Reforzada en Sector Financiero</h3>
-                        <p>"Con Cisco Secure, hemos fortalecido nuestras defensas contra ciberamenazas y cumplimos con las regulaciones más exigentes."</p>
-                        <a href="#" class="card-link">Leer Caso Completo →</a>
+                        <h3 data-translate-key="successStory2Title">Seguridad Reforzada en Sector Financiero</h3>
+                        <p data-translate-key="successStory2Desc">"Con Cisco Secure, hemos fortalecido nuestras defensas contra ciberamenazas y cumplimos con las regulaciones más exigentes."</p>
+                        <a href="#" class="card-link" data-translate-key="readFullCaseLink">Leer Caso Completo →</a>
                     </div>
                     <div class="success-story-card" data-aos="fade-up" data-aos-delay="400">
                         <div class="client-logo-placeholder">Logo Hospital Gamma</div>
-                        <h3>Mejora de la Colaboración en Salud</h3>
-                        <p>"Webex ha revolucionado la comunicación entre nuestro personal médico, mejorando la atención al paciente."</p>
-                        <a href="#" class="card-link">Leer Caso Completo →</a>
+                        <h3 data-translate-key="successStory3Title">Mejora de la Colaboración en Salud</h3>
+                        <p data-translate-key="successStory3Desc">"Webex ha revolucionado la comunicación entre nuestro personal médico, mejorando la atención al paciente."</p>
+                        <a href="#" class="card-link" data-translate-key="readFullCaseLink">Leer Caso Completo →</a>
                     </div>
                 </div>
             </div>
@@ -709,28 +479,28 @@
 
         <section class="latest-news-section">
             <div class="container">
-                <h2 class="section-title" data-aos="fade-up">Últimas Noticias y Tendencias</h2>
+                <h2 class="section-title" data-aos="fade-up" data-translate-key="newsTitle">Últimas Noticias y Tendencias</h2>
                 <div class="news-grid">
                     <div class="news-card" data-aos="fade-up" data-aos-delay="100">
                         <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Blog post image">
-                        <h3>El Futuro de la IA en Networking</h3>
-                        <p class="news-date">20 de Octubre, 2023</p>
-                        <p>Descubre cómo la inteligencia artificial está revolucionando la gestión y seguridad de las redes empresariales.</p>
-                        <a href="#" class="card-link">Leer Más →</a>
+                        <h3 data-translate-key="newsCard1Title">El Futuro de la IA en Networking</h3>
+                        <p class="news-date" data-translate-key="newsCard1Date">20 de Octubre, 2023</p>
+                        <p data-translate-key="newsCard1Desc">Descubre cómo la inteligencia artificial está revolucionando la gestión y seguridad de las redes empresariales.</p>
+                        <a href="#" class="card-link" data-translate-key="readMoreLink">Leer Más →</a>
                     </div>
                     <div class="news-card" data-aos="fade-up" data-aos-delay="200">
                         <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Webinar image">
-                        <h3>Webinar: Maximizando la Seguridad en la Nube</h3>
-                        <p class="news-date">Próximo: 5 de Noviembre, 2023</p>
-                        <p>Únete a nuestros expertos para aprender estrategias clave para proteger tus activos en entornos multi-cloud.</p>
-                        <a href="#" class="card-link">Registrarse →</a>
+                        <h3 data-translate-key="newsCard2Title">Webinar: Maximizando la Seguridad en la Nube</h3>
+                        <p class="news-date" data-translate-key="newsCard2Date">Próximo: 5 de Noviembre, 2023</p>
+                        <p data-translate-key="newsCard2Desc">Únete a nuestros expertos para aprender estrategias clave para proteger tus activos en entornos multi-cloud.</p>
+                        <a href="#" class="card-link" data-translate-key="registerLink">Registrarse →</a>
                     </div>
                     <div class="news-card" data-aos="fade-up" data-aos-delay="300">
                         <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Product launch image">
-                        <h3>Nuevo Cisco Catalyst Serie X: Potencia y Eficiencia</h3>
-                        <p class="news-date">10 de Octubre, 2023</p>
-                        <p>Presentamos la nueva generación de switches diseñados para las demandas de la red moderna.</p>
-                        <a href="#" class="card-link">Conocer Más →</a>
+                        <h3 data-translate-key="newsCard3Title">Nuevo Cisco Catalyst Serie X: Potencia y Eficiencia</h3>
+                        <p class="news-date" data-translate-key="newsCard3Date">10 de Octubre, 2023</p>
+                        <p data-translate-key="newsCard3Desc">Presentamos la nueva generación de switches diseñados para las demandas de la red moderna.</p>
+                        <a href="#" class="card-link" data-translate-key="learnMoreLink">Conocer Más →</a>
                     </div>
                 </div>
             </div>
@@ -739,41 +509,41 @@
 
         <section class="partners-section">
             <div class="container">
-                <h2 class="section-title" data-aos="fade-up">Conviértete en Partner de Cisco</h2>
-                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Únete a nuestro ecosistema de partners y accede a beneficios exclusivos, recursos y oportunidades para crecer tu negocio con las soluciones líderes de la industria.</p>
+                <h2 class="section-title" data-aos="fade-up" data-translate-key="partnersSectionTitle">Conviértete en Partner de Cisco</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100" data-translate-key="partnersSectionSubtitle">Únete a nuestro ecosistema de partners y accede a beneficios exclusivos, recursos y oportunidades para crecer tu negocio con las soluciones líderes de la industria.</p>
                 <div class="partner-benefits-grid">
                     <div class="benefit-card" data-aos="fade-right" data-aos-delay="200">
                         <div class="benefit-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg> <!-- Icono de bombilla/idea -->
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
                         </div>
-                        <h4>Nuevas Oportunidades</h4>
-                        <p>Expande tu alcance y accede a nuevos mercados con el respaldo de Cisco.</p>
+                        <h4 data-translate-key="partnerBenefit1Title">Nuevas Oportunidades</h4>
+                        <p data-translate-key="partnerBenefit1Desc">Expande tu alcance y accede a nuevos mercados con el respaldo de Cisco.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-right" data-aos-delay="300">
                         <div class="benefit-icon">
-                             <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l2 2H20v10zm-2-6H6v-2h12v2zm-4 4H6v-2h8v2z"/></svg> <!-- Icono de libro/recursos -->
+                             <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l2 2H20v10zm-2-6H6v-2h12v2zm-4 4H6v-2h8v2z"/></svg>
                         </div>
-                        <h4>Recursos y Formación</h4>
-                        <p>Capacitación de clase mundial, herramientas de marketing y soporte técnico especializado.</p>
+                        <h4 data-translate-key="partnerBenefit2Title">Recursos y Formación</h4>
+                        <p data-translate-key="partnerBenefit2Desc">Capacitación de clase mundial, herramientas de marketing y soporte técnico especializado.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-left" data-aos-delay="300">
                         <div class="benefit-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 .9C7.09.9 3.14 4.84 3.14 9.75c0 2.4.97 4.58 2.56 6.17L12 23.1l6.3-7.18c1.59-1.59 2.56-3.77 2.56-6.17C20.86 4.84 16.91.9 12 .9zm0 14.85c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg> <!-- Icono de cohete/innovación -->
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 .9C7.09.9 3.14 4.84 3.14 9.75c0 2.4.97 4.58 2.56 6.17L12 23.1l6.3-7.18c1.59-1.59 2.56-3.77 2.56-6.17C20.86 4.84 16.91.9 12 .9zm0 14.85c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>
                         </div>
-                        <h4>Innovación Constante</h4>
-                        <p>Sé parte de la vanguardia tecnológica y ofrece soluciones de futuro a tus clientes.</p>
+                        <h4 data-translate-key="partnerBenefit3Title">Innovación Constante</h4>
+                        <p data-translate-key="partnerBenefit3Desc">Sé parte de la vanguardia tecnológica y ofrece soluciones de futuro a tus clientes.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-left" data-aos-delay="200">
                         <div class="benefit-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg> <!-- Icono de comunidad/grupo -->
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
                         </div>
-                        <h4>Comunidad Global</h4>
-                        <p>Conecta con otros partners, comparte experiencias y colabora en proyectos.</p>
+                        <h4 data-translate-key="partnerBenefit4Title">Comunidad Global</h4>
+                        <p data-translate-key="partnerBenefit4Desc">Conecta con otros partners, comparte experiencias y colabora en proyectos.</p>
                     </div>
                 </div>
                 <div class="partner-cta" data-aos="fade-up">
-                    <a href="#" class="btn-primary">Únete al Programa de Partners</a>
-                    <a href="#" class="btn-secondary">Más Información</a>
+                    <a href="#" class="btn-primary" data-translate-key="joinPartnersButton">Únete al Programa de Partners</a>
+                    <a href="#" class="btn-secondary" data-translate-key="moreInfoButton">Más Información</a>
                 </div>
             </div>
         </section>
@@ -783,34 +553,34 @@
         <div class="container">
             <div class="footer-links">
                 <div data-aos="fade-up" data-aos-delay="100">
-                    <h4>Acerca de Cisco</h4>
+                    <h4 data-translate-key="footerAbout">Acerca de Cisco</h4>
                     <ul>
-                        <li><a href="#">Quiénes Somos</a></li>
-                        <li><a href="#">Noticias</a></li>
-                        <li><a href="#">Carreras</a></li>
-                        <li><a href="#">Inversores</a></li>
+                        <li><a href="#" data-translate-key="footerWhoWeAre">Quiénes Somos</a></li>
+                        <li><a href="#" data-translate-key="footerNews">Noticias</a></li>
+                        <li><a href="#" data-translate-key="footerCareers">Carreras</a></li>
+                        <li><a href="#" data-translate-key="footerInvestors">Inversores</a></li>
                     </ul>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="200">
-                    <h4>Soporte</h4>
+                    <h4 data-translate-key="footerSupport">Soporte</h4>
                     <ul>
-                        <li><a href="#">Contactar Soporte</a></li>
-                        <li><a href="#">Descargas</a></li>
-                        <li><a href="#">Comunidad</a></li>
-                        <li><a href="#">Documentación</a></li>
+                        <li><a href="#" data-translate-key="footerContactSupport">Contactar Soporte</a></li>
+                        <li><a href="#" data-translate-key="footerDownloads">Descargas</a></li>
+                        <li><a href="#" data-translate-key="footerCommunityLink">Comunidad</a></li>
+                        <li><a href="#" data-translate-key="footerDocumentation">Documentación</a></li>
                     </ul>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="300">
-                    <h4>Recursos</h4>
+                    <h4 data-translate-key="footerResources">Recursos</h4>
                     <ul>
-                        <li><a href="#">Blogs</a></li>
-                        <li><a href="#">Eventos</a></li>
-                        <li><a href="partners.html">Partners</a></li>
-                        <li><a href="#">Desarrolladores</a></li>
+                        <li><a href="#" data-translate-key="footerBlogs">Blogs</a></li>
+                        <li><a href="#" data-translate-key="footerEvents">Eventos</a></li>
+                        <li><a href="partners.html" data-translate-key="footerPartnersLink">Partners</a></li>
+                        <li><a href="#" data-translate-key="footerDevelopers">Desarrolladores</a></li>
                     </ul>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="400">
-                    <h4>Síguenos</h4>
+                    <h4 data-translate-key="footerFollowUs">Síguenos</h4>
                     <div class="social-media">
                         <a href="#" aria-label="Facebook">
                             <svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
@@ -827,34 +597,247 @@
                     </div>
                 </div>
             </div>
-            <div class="copyright">
-                © 2024 Cisco Systems, Inc. y/o sus filiales. Todos los derechos reservados. | <a href="#">Privacidad</a> | <a href="#">Términos</a> | <a href="#">Cookies</a>
+            <div class="copyright" data-translate-key="copyrightText">
+                © 2024 Cisco Systems, Inc. y/o sus filiales. Todos los derechos reservados. | <a href="#" data-translate-key="privacyLink">Privacidad</a> | <a href="#" data-translate-key="termsLink">Términos</a> | <a href="#" data-translate-key="cookiesLink">Cookies</a>
             </div>
         </div>
     </footer>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> <!-- AOS JS -->
+    <!-- === HTML DEL MODAL DE LOGIN === -->
+    <div class="modal-overlay" id="loginModalOverlay">
+        <div class="login-modal" id="loginModal">
+            <div class="login-modal-header">
+                <h2 data-translate-key="loginModalTitle">Iniciar Sesión</h2>
+                <button class="close-modal-btn" id="closeLoginModalBtn" aria-label="Cerrar">×</button>
+            </div>
+            <div class="login-modal-body">
+                <form id="loginForm">
+                    <div class="login-form-group">
+                        <label for="loginEmail" data-translate-key="loginEmailLabel">Correo Electrónico</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="login-form-group">
+                        <label for="loginPassword" data-translate-key="loginPasswordLabel">Contraseña</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="login-submit-modal-btn" data-translate-key="loginModalButton">Ingresar</button>
+                </form>
+            </div>
+            <div class="login-modal-footer">
+                <p><span data-translate-key="loginNoAccount">¿No tienes cuenta?</span> <a href="#" data-translate-key="loginRegisterLink">Regístrate aquí</a></p>
+                <p><a href="#" data-translate-key="loginForgotPasswordLink">¿Olvidaste tu contraseña?</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- === FIN HTML MODAL === -->
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         // Inicializar AOS
         AOS.init({
-            duration: 800, // Duración de la animación
-            once: true,    // Si la animación debe ocurrir solo una vez
+            duration: 800,
+            once: true,
         });
 
-        // Funcionalidad para los tabs del buscador en Hero Section
-        const searchTabs = document.querySelectorAll('.search-tabs .tab-btn');
-        const searchInput = document.getElementById('search-main');
+        // === TRADUCCIONES ===
+        const translations = {
+            pageTitle: { es: "Cisco Soluciones - Inspirado en LATAM", en: "Cisco Solutions - LATAM Inspired", pt: "Cisco Soluções - Inspirado na LATAM" },
+            // NAV
+            navProducts: { es: "Productos", en: "Products", pt: "Produtos" },
+            navSolutions: { es: "Soluciones", en: "Solutions", pt: "Soluções" },
+            navSupport: { es: "Soporte", en: "Support", pt: "Suporte" },
+            navPartners: { es: "Partners", en: "Partners", pt: "Parceiros" },
+            navCommunity: { es: "Comunidad", en: "Community", pt: "Comunidade" },
+            loginButton: { es: "Iniciar Sesión", en: "Log In", pt: "Entrar" },
+            // HERO
+            heroTitle: { es: "Descubre el Futuro de la Red con Cisco", en: "Discover the Future of Networking with Cisco", pt: "Descubra o Futuro das Redes com a Cisco" },
+            heroSubtitle: { es: "Soluciones innovadoras para un mundo conectado y seguro.", en: "Innovative solutions for a connected and secure world.", pt: "Soluções inovadoras para um mundo conectado e seguro." },
+            searchTabSolutions: { es: "Buscar Soluciones", en: "Search Solutions", pt: "Buscar Soluções" },
+            searchTabProducts: { es: "Consultar Productos", en: "Browse Products", pt: "Consultar Produtos" },
+            searchTabResources: { es: "Recursos Técnicos", en: "Technical Resources", pt: "Recursos Técnicos" },
+            searchButton: { es: "Buscar Ahora", en: "Search Now", pt: "Buscar Agora" },
+            quickLinkNetworking: { es: "Networking", en: "Networking", pt: "Redes" },
+            quickLinkSecurity: { es: "Seguridad", en: "Security", pt: "Segurança" },
+            quickLinkCollaboration: { es: "Colaboración", en: "Collaboration", pt: "Colaboração" },
+            quickLinkDataCenter: { es: "Data Center", en: "Data Center", pt: "Data Center" },
+            // PROMO CARDS
+            promoTitle: { es: "Innovaciones Destacadas de Cisco", en: "Cisco's Featured Innovations", pt: "Inovações em Destaque da Cisco" },
+            promoCard1Title: { es: "Soluciones Cloud Híbridas", en: "Hybrid Cloud Solutions", pt: "Soluções de Nuvem Híbrida" },
+            promoCard1Desc: { es: "Integra y gestiona tus entornos cloud con la flexibilidad y seguridad que necesitas.", en: "Integrate and manage your cloud environments with the flexibility and security you need.", pt: "Integre e gerencie seus ambientes de nuvem com a flexibilidade e segurança que você precisa." },
+            learnMoreLink: { es: "Descubre Más →", en: "Learn More →", pt: "Saiba Mais →" }, // Clave genérica para enlaces "Learn More"
+            promoCard2Title: { es: "Seguridad de Red Avanzada", en: "Advanced Network Security", pt: "Segurança de Rede Avançada" },
+            promoCard2Desc: { es: "Protege tu infraestructura crítica con nuestras soluciones de ciberseguridad de última generación.", en: "Protect your critical infrastructure with our next-generation cybersecurity solutions.", pt: "Proteja sua infraestrutura crítica com nossas soluções de cibersegurança de última geração." },
+            viewSolutionsLink: { es: "Ver Soluciones →", en: "View Solutions →", pt: "Ver Soluções →" },
+            promoCard3Title: { es: "Colaboración Inteligente", en: "Intelligent Collaboration", pt: "Colaboração Inteligente" },
+            promoCard3Desc: { es: "Transforma la forma en que tus equipos trabajan juntos con Webex y nuestras herramientas.", en: "Transform how your teams work together with Webex and our tools.", pt: "Transforme a maneira como suas equipes trabalham juntas com o Webex e nossas ferramentas." },
+            exploreWebexLink: { es: "Explorar Webex →", en: "Explore Webex →", pt: "Explorar Webex →" },
+            // CUSTOMER SUCCESS
+            successTitle: { es: "Casos de Éxito de Nuestros Clientes", en: "Customer Success Stories", pt: "Casos de Sucesso de Nossos Clientes" },
+            successSubtitle: { es: "Vea cómo hemos ayudado a empresas como la suya a alcanzar sus objetivos.", en: "See how we've helped companies like yours achieve their goals.", pt: "Veja como ajudamos empresas como a sua a alcançar seus objetivos." },
+            successStory1Title: { es: "Transformación Digital en Retail", en: "Digital Transformation in Retail", pt: "Transformação Digital no Varejo" },
+            successStory1Desc: { es: "\"Las soluciones de Cisco nos permitieron optimizar nuestra red y mejorar la experiencia del cliente en un 30%.\"", en: "\"Cisco solutions allowed us to optimize our network and improve customer experience by 30%.\"", pt: "\"As soluções da Cisco nos permitiram otimizar nossa rede e melhorar a experiência do cliente em 30%.\"" },
+            readFullCaseLink: { es: "Leer Caso Completo →", en: "Read Full Case →", pt: "Ler Caso Completo →" }, // Clave genérica
+            successStory2Title: { es: "Seguridad Reforzada en Sector Financiero", en: "Enhanced Security in Financial Sector", pt: "Segurança Reforçada no Setor Financeiro" },
+            successStory2Desc: { es: "\"Con Cisco Secure, hemos fortalecido nuestras defensas contra ciberamenazas y cumplimos con las regulaciones más exigentes.\"", en: "\"With Cisco Secure, we have strengthened our defenses against cyber threats and comply with the most demanding regulations.\"", pt: "\"Com o Cisco Secure, fortalecemos nossas defesas contra ameaças cibernéticas e cumprimos as regulamentações mais exigentes.\"" },
+            successStory3Title: { es: "Mejora de la Colaboración en Salud", en: "Improved Collaboration in Healthcare", pt: "Melhoria da Colaboração na Saúde" },
+            successStory3Desc: { es: "\"Webex ha revolucionado la comunicación entre nuestro personal médico, mejorando la atención al paciente.\"", en: "\"Webex has revolutionized communication among our medical staff, improving patient care.\"", pt: "\"O Webex revolucionou a comunicação entre nossa equipe médica, melhorando o atendimento ao paciente.\"" },
+            // LATEST NEWS
+            newsTitle: { es: "Últimas Noticias y Tendencias", en: "Latest News and Trends", pt: "Últimas Notícias e Tendências" },
+            newsCard1Title: { es: "El Futuro de la IA en Networking", en: "The Future of AI in Networking", pt: "O Futuro da IA em Redes" },
+            newsCard1Date: { es: "20 de Octubre, 2023", en: "October 20, 2023", pt: "20 de Outubro, 2023" },
+            newsCard1Desc: { es: "Descubre cómo la inteligencia artificial está revolucionando la gestión y seguridad de las redes empresariales.", en: "Discover how artificial intelligence is revolutionizing the management and security of enterprise networks.", pt: "Descubra como a inteligência artificial está revolucionando o gerenciamento e a segurança das redes empresariais." },
+            readMoreLink: { es: "Leer Más →", en: "Read More →", pt: "Leia Mais →" }, // Clave genérica
+            newsCard2Title: { es: "Webinar: Maximizando la Seguridad en la Nube", en: "Webinar: Maximizing Cloud Security", pt: "Webinar: Maximizando a Segurança na Nuvem" },
+            newsCard2Date: { es: "Próximo: 5 de Noviembre, 2023", en: "Upcoming: November 5, 2023", pt: "Próximo: 5 de Novembro, 2023" },
+            newsCard2Desc: { es: "Únete a nuestros expertos para aprender estrategias clave para proteger tus activos en entornos multi-cloud.", en: "Join our experts to learn key strategies for protecting your assets in multi-cloud environments.", pt: "Junte-se aos nossos especialistas para aprender estratégias importantes para proteger seus ativos em ambientes multinuvem." },
+            registerLink: { es: "Registrarse →", en: "Register →", pt: "Inscreva-se →" },
+            newsCard3Title: { es: "Nuevo Cisco Catalyst Serie X: Potencia y Eficiencia", en: "New Cisco Catalyst X Series: Power and Efficiency", pt: "Nova Série Cisco Catalyst X: Potência e Eficiência" },
+            newsCard3Date: { es: "10 de Octubre, 2023", en: "October 10, 2023", pt: "10 de Outubro, 2023" },
+            newsCard3Desc: { es: "Presentamos la nueva generación de switches diseñados para las demandas de la red moderna.", en: "Introducing the new generation of switches designed for the demands of the modern network.", pt: "Apresentamos a nova geração de switches projetados para as demandas da rede moderna." },
+            // PARTNERS SECTION
+            partnersSectionTitle: { es: "Conviértete en Partner de Cisco", en: "Become a Cisco Partner", pt: "Torne-se um Parceiro Cisco" },
+            partnersSectionSubtitle: { es: "Únete a nuestro ecosistema de partners y accede a beneficios exclusivos, recursos y oportunidades para crecer tu negocio con las soluciones líderes de la industria.", en: "Join our partner ecosystem and access exclusive benefits, resources, and opportunities to grow your business with industry-leading solutions.", pt: "Junte-se ao nosso ecossistema de parceiros e acesse benefícios exclusivos, recursos e oportunidades para expandir seus negócios com as soluções líderes do setor." },
+            partnerBenefit1Title: { es: "Nuevas Oportunidades", en: "New Opportunities", pt: "Novas Oportunidades" },
+            partnerBenefit1Desc: { es: "Expande tu alcance y accede a nuevos mercados con el respaldo de Cisco.", en: "Expand your reach and access new markets with Cisco's support.", pt: "Expanda seu alcance e acesse novos mercados com o apoio da Cisco." },
+            partnerBenefit2Title: { es: "Recursos y Formación", en: "Resources and Training", pt: "Recursos e Treinamento" },
+            partnerBenefit2Desc: { es: "Capacitación de clase mundial, herramientas de marketing y soporte técnico especializado.", en: "World-class training, marketing tools, and specialized technical support.", pt: "Treinamento de classe mundial, ferramentas de marketing e suporte técnico especializado." },
+            partnerBenefit3Title: { es: "Innovación Constante", en: "Constant Innovation", pt: "Inovação Constante" },
+            partnerBenefit3Desc: { es: "Sé parte de la vanguardia tecnológica y ofrece soluciones de futuro a tus clientes.", en: "Be part of the technological forefront and offer future-proof solutions to your customers.", pt: "Faça parte da vanguarda tecnológica e ofereça soluções futuras aos seus clientes." },
+            partnerBenefit4Title: { es: "Comunidad Global", en: "Global Community", pt: "Comunidade Global" },
+            partnerBenefit4Desc: { es: "Conecta con otros partners, comparte experiencias y colabora en proyectos.", en: "Connect with other partners, share experiences, and collaborate on projects.", pt: "Conecte-se com outros parceiros, compartilhe experiências e colabore em projetos." },
+            joinPartnersButton: { es: "Únete al Programa de Partners", en: "Join the Partner Program", pt: "Junte-se ao Programa de Parceiros" },
+            moreInfoButton: { es: "Más Información", en: "More Information", pt: "Mais Informações" },
+            // FOOTER
+            footerAbout: { es: "Acerca de Cisco", en: "About Cisco", pt: "Sobre a Cisco" },
+            footerWhoWeAre: { es: "Quiénes Somos", en: "Who We Are", pt: "Quem Somos" },
+            footerNews: { es: "Noticias", en: "News", pt: "Notícias" },
+            footerCareers: { es: "Carreras", en: "Careers", pt: "Carreiras" },
+            footerInvestors: { es: "Inversores", en: "Investors", pt: "Investidores" },
+            footerSupport: { es: "Soporte", en: "Support", pt: "Suporte" },
+            footerContactSupport: { es: "Contactar Soporte", en: "Contact Support", pt: "Contatar Suporte" },
+            footerDownloads: { es: "Descargas", en: "Downloads", pt: "Downloads" },
+            footerCommunityLink: { es: "Comunidad", en: "Community", pt: "Comunidade" },
+            footerDocumentation: { es: "Documentación", en: "Documentation", pt: "Documentação" },
+            footerResources: { es: "Recursos", en: "Resources", pt: "Recursos" },
+            footerBlogs: { es: "Blogs", en: "Blogs", pt: "Blogs" },
+            footerEvents: { es: "Eventos", en: "Events", pt: "Eventos" },
+            footerPartnersLink: { es: "Partners", en: "Partners", pt: "Parceiros" },
+            footerDevelopers: { es: "Desarrolladores", en: "Developers", pt: "Desenvolvedores" },
+            footerFollowUs: { es: "Síguenos", en: "Follow Us", pt: "Siga-nos" },
+            copyrightText: { es: "© 2024 Cisco Systems, Inc. y/o sus filiales. Todos los derechos reservados. | ", en: "© 2024 Cisco Systems, Inc. and/or its affiliates. All rights reserved. | ", pt: "© 2024 Cisco Systems, Inc. e/ou suas afiliadas. Todos os direitos reservados. | " },
+            privacyLink: { es: "Privacidad", en: "Privacy", pt: "Privacidade" },
+            termsLink: { es: "Términos", en: "Terms", pt: "Termos" },
+            cookiesLink: { es: "Cookies", en: "Cookies", pt: "Cookies" },
+            // LOGIN MODAL
+            loginModalTitle: { es: "Iniciar Sesión", en: "Log In", pt: "Entrar" },
+            loginEmailLabel: { es: "Correo Electrónico", en: "Email Address", pt: "Endereço de Email" },
+            loginPasswordLabel: { es: "Contraseña", en: "Password", pt: "Senha" },
+            loginModalButton: { es: "Ingresar", en: "Log In", pt: "Entrar" },
+            loginNoAccount: { es: "¿No tienes cuenta?", en: "Don't have an account?", pt: "Não tem uma conta?" },
+            loginRegisterLink: { es: "Regístrate aquí", en: "Sign up here", pt: "Cadastre-se aqui" },
+            loginForgotPasswordLink: { es: "¿Olvidaste tu contraseña?", en: "Forgot your password?", pt: "Esqueceu sua senha?" },
+        };
 
-        searchTabs.forEach(tab => {
+        const languageSelector = document.getElementById('languageDropdown');
+        const currentLangBtnText = document.getElementById('selectedLangText');
+        const searchTabsButtons = document.querySelectorAll('.search-tabs .tab-btn');
+        const searchMainInput = document.getElementById('search-main');
+        const pageTitleElement = document.querySelector('title');
+
+        function applyTranslations(lang) {
+            document.documentElement.lang = lang;
+            if (pageTitleElement && translations.pageTitle && translations.pageTitle[lang]) {
+                pageTitleElement.textContent = translations.pageTitle[lang];
+            }
+
+            document.querySelectorAll('[data-translate-key]').forEach(element => {
+                const key = element.getAttribute('data-translate-key');
+                if (translations[key] && translations[key][lang]) {
+                    // Para el copyright, necesitamos manejar el texto y los enlaces por separado
+                    if (key === 'copyrightText') {
+                        let baseText = translations[key][lang];
+                        const privacyText = translations.privacyLink[lang];
+                        const termsText = translations.termsLink[lang];
+                        const cookiesText = translations.cookiesLink[lang];
+                        element.innerHTML = `${baseText}<a href="#" data-translate-key="privacyLink">${privacyText}</a> | <a href="#" data-translate-key="termsLink">${termsText}</a> | <a href="#" data-translate-key="cookiesLink">${cookiesText}</a>`;
+                    } else if (element.tagName === 'A' && element.classList.contains('card-link') && translations[key] && translations[key][lang]) {
+                        // Caso especial para los enlaces de tarjeta que pueden tener texto diferente
+                        element.textContent = translations[key][lang];
+                    }
+                    else {
+                         element.textContent = translations[key][lang];
+                    }
+                }
+            });
+
+            searchTabsButtons.forEach(tab => {
+                const placeholderKey = `data-placeholder-${lang}`;
+                if (tab.hasAttribute(placeholderKey)) {
+                    if (tab.classList.contains('active')) {
+                        searchMainInput.placeholder = tab.getAttribute(placeholderKey);
+                    }
+                }
+            });
+
+            if (currentLangBtnText) {
+                if (lang === 'es') currentLangBtnText.textContent = 'ES';
+                if (lang === 'en') currentLangBtnText.textContent = 'EN';
+                if (lang === 'pt') currentLangBtnText.textContent = 'PT';
+            }
+            
+            document.querySelectorAll('.language-dropdown a').forEach(a => {
+                a.classList.remove('selected-lang-item');
+                if (a.getAttribute('data-lang') === lang) {
+                    a.classList.add('selected-lang-item');
+                }
+            });
+        }
+
+        function setLanguage(lang) {
+            applyTranslations(lang);
+            localStorage.setItem('selectedLanguage', lang);
+        }
+
+        if (languageSelector) {
+            languageSelector.addEventListener('click', (event) => {
+                if (event.target.tagName === 'A' && event.target.dataset.lang) {
+                    event.preventDefault();
+                    const lang = event.target.dataset.lang;
+                    setLanguage(lang);
+                }
+            });
+        }
+        
+        searchTabsButtons.forEach(tab => {
             tab.addEventListener('click', () => {
-                // Quitar clase 'active' de todos los tabs
-                searchTabs.forEach(t => t.classList.remove('active'));
-                // Añadir clase 'active' al tab clickeado
+                searchTabsButtons.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                // Cambiar el placeholder del input
-                searchInput.placeholder = tab.dataset.placeholder;
+                const currentLang = localStorage.getItem('selectedLanguage') || 'es';
+                const placeholderKey = `data-placeholder-${currentLang}`;
+                if (tab.hasAttribute(placeholderKey)) {
+                    searchMainInput.placeholder = tab.getAttribute(placeholderKey);
+                } else { 
+                    searchMainInput.placeholder = searchMainInput.getAttribute('placeholder');
+                }
             });
         });
+
+        const savedLanguage = localStorage.getItem('selectedLanguage');
+        if (savedLanguage) {
+            applyTranslations(savedLanguage);
+        } else {
+            applyTranslations('es');
+        }
+
+        const openLoginModalBtn = document.getElementById('openLoginModalBtn');
+        const closeLoginModalBtn = document.getElementById('closeLoginModalBtn');
+        const loginModalOverlay = document.getElementById('loginModalOverlay');
+        const loginForm = document.getElementById('loginForm');
+
+        if (openLoginModalBtn && loginModalOverlay) { openLoginModalBtn.addEventListener('click', () => { loginModalOverlay.classList.add('active'); }); }
+        if (closeLoginModalBtn && loginModalOverlay) { closeLoginModalBtn.addEventListener('click', () => { loginModalOverlay.classList.remove('active'); }); }
+        if (loginModalOverlay) { loginModalOverlay.addEventListener('click', (event) => { if (event.target === loginModalOverlay) { loginModalOverlay.classList.remove('active'); } }); }
+        if (loginForm) { loginForm.addEventListener('submit', (event) => { event.preventDefault(); alert('Intento de inicio de sesión (simulado).'); loginModalOverlay.classList.remove('active'); }); }
     </script>
 </body>
 </html>

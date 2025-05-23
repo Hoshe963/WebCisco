@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cisco - Iniciar Sesión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Podrías enlazar a un archivo CSS común si lo tienes, o copiar los estilos base -->
+    <style>
+        body, html { margin: 0; padding: 0; font-family: 'Roboto', sans-serif; color: #333; background-color: #f4f6f8; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        /* ... (Copia los estilos del header y footer de tus otras páginas aquí) ... */
+        /* Estilos para la página de login */
+        .login-page-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 180px); /* Ajusta 180px según la altura de tu header+footer */
+            padding: 40px 0;
+        }
+        .login-form-card {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 420px;
+        }
+        .login-form-card h1 {
+            text-align: center;
+            color: #005073;
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+        .login-form-group { margin-bottom: 20px; }
+        .login-form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; }
+        .login-form-group input[type="email"],
+        .login-form-group input[type="password"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 15px; }
+        .login-form-group input[type="email"]:focus,
+        .login-form-group input[type="password"]:focus { border-color: #0073b1; box-shadow: 0 0 0 0.2rem rgba(0,115,177,.25); outline: none; }
+        .login-submit-page-btn { background-color: #0073b1; color: white; border: none; padding: 12px 25px; font-size: 16px; font-weight: 700; border-radius: 4px; cursor: pointer; width: 100%; transition: background-color 0.3s ease; }
+        .login-submit-page-btn:hover { background-color: #005073; }
+        .login-page-footer-links { text-align: center; margin-top: 20px; font-size: 14px; }
+        .login-page-footer-links a { color: #0073b1; text-decoration: none; margin: 0 5px; }
+        .login-page-footer-links a:hover { text-decoration: underline; }
+
+        /* COPIA AQUÍ LOS ESTILOS DEL HEADER Y FOOTER DE TUS OTRAS PÁGINAS */
+        /* Barra superior */ .top-bar { height: 5px; background-color: #a8b8c0; }
+        /* Header */ header { background-color: #fff; padding: 20px 0; border-bottom: 1px solid #e0e0e0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 1000; }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 32px; font-weight: 700; color: #005073; letter-spacing: -1px; }
+        nav { flex-grow: 1; display: flex; justify-content: center; }
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; }
+        nav ul li { margin: 0 18px; }
+        nav ul li a { text-decoration: none; color: #4a4a4a; font-weight: 500; font-size: 16px; transition: color 0.3s ease; }
+        nav ul li a:hover, nav ul li a.active { color: #005073; }
+        .user-actions { display: flex; align-items: center; }
+        .user-actions a { text-decoration: none; color: #4a4a4a; margin-left: 20px; font-size: 14px; display: flex; align-items: center; }
+        .user-actions a:first-child { margin-left: 0; }
+        .user-actions .login-btn { background-color: #0073b1; color: white; padding: 8px 18px; border-radius: 4px; font-weight: 500; transition: background-color 0.3s ease; }
+        .user-actions .login-btn:hover { background-color: #005073; }
+        .user-actions .search-icon svg { stroke: #4a4a4a; fill: none; transition: stroke 0.3s ease; }
+        .user-actions .search-icon:hover svg { stroke: #005073; }
+        .arrow-down { font-size: 0.7em; margin-left: 5px; }
+        /* Footer */ footer { background-color: #333a40; color: #adb5bd; padding: 50px 0 30px; font-size: 14px; }
+        .footer-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .footer-links h4 { color: #fff; font-size: 16px; margin-bottom: 15px; font-weight: 500; }
+        .footer-links ul { list-style: none; padding: 0; margin: 0; }
+        .footer-links ul li a { color: #adb5bd; text-decoration: none; line-height: 2.0; transition: color 0.3s ease, padding-left 0.3s ease; }
+        .footer-links ul li a:hover { color: #fff; padding-left: 5px; }
+        .social-media { display: flex; }
+        .social-media a { color: #adb5bd; margin-right: 15px; text-decoration: none; display: inline-block; }
+        .social-media a svg { width: 20px; height: 20px; fill: #adb5bd; stroke: none; transition: fill 0.3s ease; }
+        .social-media a:hover svg { fill: #fff; }
+        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid #495057; font-size: 13px; color: #868e96; }
+        .copyright a { color: #adb5bd; text-decoration: none; }
+        .copyright a:hover { text-decoration: underline; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="top-bar"></div>
+    <header>
+        <div class="container">
+            <div class="logo">CISCO</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Productos</a></li>
+                    <li><a href="soluciones.html">Soluciones</a></li>
+                    <li><a href="soporte.html">Soporte</a></li>
+                    <li><a href="partners.html">Partners</a></li>
+                    <li><a href="comunidad.html">Comunidad</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <a href="#" class="lang-selector">ES <span class="arrow-down">▼</span></a>
+                <a href="login.html" class="login-btn">Iniciar Sesión</a> <!-- Enlace a sí mismo o a la página principal si ya está logueado -->
+                <a href="#" class="search-icon" aria-label="Buscar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="login-page-container">
+        <div class="login-form-card">
+            <h1>Bienvenido de Nuevo</h1>
+            <form id="loginPageForm">
+                <div class="login-form-group">
+                    <label for="loginPageEmail">Correo Electrónico</label>
+                    <input type="email" id="loginPageEmail" name="email" required>
+                </div>
+                <div class="login-form-group">
+                    <label for="loginPagePassword">Contraseña</label>
+                    <input type="password" id="loginPagePassword" name="password" required>
+                </div>
+                <button type="submit" class="login-submit-page-btn">Ingresar</button>
+            </form>
+            <div class="login-page-footer-links">
+                <p>¿No tienes cuenta? <a href="#">Regístrate aquí</a></p>
+                <p><a href="#">¿Olvidaste tu contraseña?</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <!-- ... (COPIA TU FOOTER AQUÍ) ... -->
+    </footer>
+    <script>
+        const loginPageForm = document.getElementById('loginPageForm');
+        if (loginPageForm) {
+            loginPageForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                alert('Intento de inicio de sesión desde página dedicada (simulado).');
+                // Aquí iría la lógica de autenticación y redirección
+                // window.location.href = 'index.html'; // Ejemplo de redirección
+            });
+        }
+    </script>
+</body>
+</html>
