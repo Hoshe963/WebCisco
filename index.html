@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cisco Soluciones - Inspirado en LATAM</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> <!-- AOS CSS -->
     <style>
         /* Reseteo básico y fuentes */
         body, html {
@@ -13,19 +14,20 @@
             font-family: 'Roboto', sans-serif;
             color: #333;
             background-color: #f4f6f8;
+            scroll-behavior: smooth;
         }
 
         .container {
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px; /* Añade padding para que el contenido no toque los bordes */
+            padding: 0 15px;
         }
 
         /* Barra superior */
         .top-bar {
             height: 5px;
-            background-color: #a8b8c0; /* Color de la barra superior */
+            background-color: #a8b8c0;
         }
 
         /* Header */
@@ -34,7 +36,7 @@
             padding: 20px 0;
             border-bottom: 1px solid #e0e0e0;
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            position: sticky; /* Header fijo */
+            position: sticky;
             top: 0;
             z-index: 1000;
         }
@@ -48,11 +50,8 @@
         .logo {
             font-size: 32px;
             font-weight: 700;
-            color: #005073; /* Azul Cisco */
+            color: #005073;
             letter-spacing: -1px;
-            /* Si usas imagen:
-            .logo img { height: 30px; }
-            */
         }
 
         nav {
@@ -74,15 +73,15 @@
 
         nav ul li a {
             text-decoration: none;
-            color: #4a4a4a; /* Gris oscuro para los links */
+            color: #4a4a4a;
             font-weight: 500;
             font-size: 16px;
             transition: color 0.3s ease;
         }
 
         nav ul li a:hover,
-        nav ul li a.active { /* Para una página activa */
-            color: #005073; /* Azul Cisco al pasar el ratón */
+        nav ul li a.active {
+            color: #005073;
         }
 
         .user-actions {
@@ -103,7 +102,7 @@
         }
 
         .user-actions .login-btn {
-            background-color: #0073b1; /* Azul Cisco/LATAM más estándar */
+            background-color: #0073b1;
             color: white;
             padding: 8px 18px;
             border-radius: 4px;
@@ -112,15 +111,24 @@
         }
 
         .user-actions .login-btn:hover {
-            background-color: #005073; /* Azul más oscuro */
+            background-color: #005073;
         }
 
-        .user-actions .search-icon svg {
+        .user-actions .search-icon svg,
+        .social-media svg { /* Estilo común para SVGs de iconos */
             stroke: #4a4a4a;
+            fill: none; /* Asegurar que no haya relleno por defecto si no se desea */
+            transition: stroke 0.3s ease, fill 0.3s ease;
         }
-        .user-actions .search-icon:hover svg {
+        .user-actions .search-icon:hover svg,
+        .social-media a:hover svg {
             stroke: #005073;
         }
+        .social-media a:hover svg { /* Específico para iconos sociales en footer */
+            fill: #005073; /* O el color que prefieras para el hover */
+            stroke: #005073;
+        }
+
 
         .arrow-down {
             font-size: 0.7em;
@@ -129,13 +137,13 @@
 
         /* Hero Section */
         .hero {
-            background-image: linear-gradient(rgba(0, 80, 115, 0.6), rgba(0, 40, 60, 0.8)), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80'); /* CAMBIA ESTA IMAGEN */
+            background-image: linear-gradient(rgba(0, 80, 115, 0.6), rgba(0, 40, 60, 0.8)), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80');
             background-size: cover;
             background-position: center;
-            padding: 80px 0; /* Reducido padding para que no sea tan alto con header sticky */
+            padding: 80px 0;
             color: white;
             text-align: center;
-            margin-top: 0; /* Asegurar que no hay margen superior si el header es sticky */
+            margin-top: 0;
         }
 
         .hero-content {
@@ -144,13 +152,13 @@
         }
 
         .hero h1 {
-            font-size: 42px; /* Ajustado */
+            font-size: 42px;
             margin-bottom: 15px;
             font-weight: 700;
             line-height: 1.2;
         }
         .hero-subtitle {
-            font-size: 18px; /* Ajustado */
+            font-size: 18px;
             margin-bottom: 30px;
             font-weight: 300;
             opacity: 0.9;
@@ -158,7 +166,7 @@
 
         .search-box {
             background-color: rgba(255, 255, 255, 0.95);
-            padding: 25px; /* Ajustado */
+            padding: 25px;
             border-radius: 8px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             color: #333;
@@ -174,9 +182,9 @@
         .search-tabs .tab-btn {
             background: none;
             border: none;
-            padding: 12px 15px; /* Ajustado */
+            padding: 12px 15px;
             cursor: pointer;
-            font-size: 15px; /* Ajustado */
+            font-size: 15px;
             font-weight: 500;
             color: #555;
             border-bottom: 3px solid transparent;
@@ -191,16 +199,16 @@
         }
 
         .search-form .form-group {
-            margin-bottom: 15px; /* Ajustado */
+            margin-bottom: 15px;
         }
 
         .search-form input[type="text"] {
             width: 100%;
-            padding: 12px; /* Ajustado */
+            padding: 12px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
-            font-size: 15px; /* Ajustado */
+            font-size: 15px;
         }
         .search-form input[type="text"]:focus {
             border-color: #0073b1;
@@ -212,8 +220,8 @@
             background-color: #0073b1;
             color: white;
             border: none;
-            padding: 12px 25px; /* Ajustado */
-            font-size: 16px; /* Ajustado */
+            padding: 12px 25px;
+            font-size: 16px;
             font-weight: 700;
             border-radius: 4px;
             cursor: pointer;
@@ -239,27 +247,43 @@
             text-decoration: underline;
         }
 
-        /* Promo Cards Section */
-        .promo-cards {
-            padding: 60px 0;
-            background-color: #f9f9f9;
-        }
-
-        .promo-cards h2 {
+        /* Estilo común para títulos de sección */
+        .section-title {
             text-align: center;
-            font-size: 30px; /* Ajustado */
-            margin-bottom: 40px; /* Ajustado */
+            font-size: 30px;
+            margin-bottom: 40px;
             color: #005073;
             font-weight: 700;
         }
+        .section-subtitle { /* Para subtítulos opcionales debajo del título principal de sección */
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.7;
+            color: #555;
+            max-width: 800px;
+            margin: -20px auto 40px auto; /* Ajustar si se usa con .section-title */
+        }
 
-        .cards-grid {
+
+        /* Promo Cards Section */
+        .promo-cards, .customer-success-section, .latest-news-section {
+            padding: 60px 0;
+        }
+        .promo-cards, .latest-news-section { /* Fondos alternos */
+             background-color: #f9f9f9;
+        }
+        .customer-success-section {
+            background-color: #fff;
+        }
+
+
+        .cards-grid, .success-grid, .news-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ajustado */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
 
-        .card {
+        .card, .success-story-card, .news-card {
             background-color: #fff;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
@@ -270,65 +294,96 @@
             flex-direction: column;
         }
 
-        .card:hover {
-            transform: translateY(-5px); /* Reducido efecto hover */
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Reducido efecto hover */
+        .card:hover, .success-story-card:hover, .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
 
-        .card img {
+        .card img, .news-card img {
             width: 100%;
-            height: 200px; /* Ajustado */
+            height: 200px;
             object-fit: cover;
         }
 
-        .card h3 {
-            font-size: 20px; /* Ajustado */
+        .card h3, .success-story-card h3, .news-card h3 {
+            font-size: 20px;
             color: #005073;
-            margin: 15px 20px 10px; /* Ajustado */
+            margin: 15px 20px 10px;
             font-weight: 700;
         }
 
-        .card p {
-            font-size: 15px; /* Ajustado */
-            line-height: 1.6; /* Ajustado */
+        .card p, .success-story-card p, .news-card p {
+            font-size: 15px;
+            line-height: 1.6;
             color: #555;
-            margin: 0 20px 15px; /* Ajustado */
+            margin: 0 20px 15px;
             flex-grow: 1;
         }
+        .news-card .news-date {
+            font-size: 13px;
+            color: #777;
+            margin: -5px 20px 10px;
+        }
 
-        .card .card-link {
+
+        .card .card-link, .success-story-card .card-link, .news-card .card-link {
             display: inline-block;
-            margin: 0 20px 20px; /* Ajustado */
+            margin: 0 20px 20px;
             color: #0073b1;
             text-decoration: none;
             font-weight: 500;
             align-self: flex-start;
         }
 
-        .card .card-link:hover {
+        .card .card-link:hover, .success-story-card .card-link:hover, .news-card .card-link:hover {
             text-decoration: underline;
             color: #005073;
         }
 
+        /* Customer Success Section Specifics */
+        .success-story-card .client-logo-placeholder {
+            height: 50px;
+            width: 150px;
+            background-color: #e0e0e0;
+            margin: 20px auto 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-size: 14px;
+        }
+         .success-story-card h3 {
+            text-align: center;
+         }
+        .success-story-card p {
+            text-align: center;
+            font-style: italic;
+        }
+        .success-story-card .card-link {
+            align-self: center;
+        }
+
+
         /* Partners Section */
         .partners-section {
             padding: 60px 0;
-            background-color: #fff;
+            background-color: #fff; /* Fondo blanco para esta sección */
         }
-        .partners-section h2 {
-            text-align: center;
-            font-size: 30px; /* Ajustado */
+        .partners-section h2 { /* Ya definido por .section-title */
+            /* text-align: center;
+            font-size: 30px;
             margin-bottom: 20px;
             color: #005073;
-            font-weight: 700;
+            font-weight: 700; */
         }
-        .partners-intro {
-            text-align: center;
+        .partners-intro { /* Ya definido por .section-subtitle */
+            /* text-align: center;
             font-size: 18px;
             line-height: 1.7;
             color: #555;
             max-width: 800px;
-            margin: 0 auto 40px auto;
+            margin: 0 auto 40px auto; */
         }
         .partner-benefits-grid {
             display: grid;
@@ -348,16 +403,20 @@
             transform: translateY(-5px);
             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
-        .benefit-icon-placeholder {
-            font-size: 14px;
+        .benefit-icon { /* Contenedor para el SVG */
             color: #0073b1;
             margin-bottom: 15px;
-            font-weight: 500;
-            height: 40px;
+            height: 40px; /* Altura del icono */
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        .benefit-icon svg {
+            width: 36px; /* Tamaño del SVG */
+            height: 36px;
+            fill: #0073b1; /* Color del icono */
+        }
+
         .benefit-card h4 {
             font-size: 20px;
             color: #005073;
@@ -414,7 +473,7 @@
 
         .footer-links {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajustado */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 30px;
             margin-bottom: 40px;
         }
@@ -435,7 +494,7 @@
         .footer-links ul li a {
             color: #adb5bd;
             text-decoration: none;
-            line-height: 2.0; /* Ajustado */
+            line-height: 2.0;
             transition: color 0.3s ease, padding-left 0.3s ease;
         }
 
@@ -444,15 +503,27 @@
             padding-left: 5px;
         }
 
+        .social-media {
+            display: flex; /* Para alinear los iconos */
+        }
         .social-media a {
             color: #adb5bd;
             margin-right: 15px;
-            font-size: 18px;
+            font-size: 18px; /* El tamaño del SVG se controla por width/height en el SVG */
             text-decoration: none;
+            display: inline-block; /* Para que el hover funcione bien */
         }
-        .social-media a:hover {
-            color: #fff;
+         .social-media a svg {
+            width: 20px;
+            height: 20px;
+            fill: #adb5bd; /* Color inicial de los iconos sociales */
+            stroke: none; /* Sin borde para estos iconos */
+            transition: fill 0.3s ease;
         }
+        .social-media a:hover svg {
+            fill: #fff; /* Color al pasar el ratón */
+        }
+
 
         .copyright {
             text-align: center;
@@ -493,23 +564,23 @@
             .user-actions {
                 margin-left: auto;
             }
-            .hero h1 { font-size: 34px; } /* Ajustado */
-            .hero-subtitle { font-size: 16px; } /* Ajustado */
-            .promo-cards h2, .partners-section h2 { font-size: 26px; } /* Ajustado */
+            .hero h1 { font-size: 34px; }
+            .hero-subtitle { font-size: 16px; }
+            .section-title { font-size: 26px; }
         }
 
         @media (max-width: 768px) {
-            .container { padding: 0 10px; } /* Menos padding en móvil */
+            .container { padding: 0 10px; }
             .logo { font-size: 28px; }
-            .user-actions .lang-selector, .user-actions .login-btn { display: none; } /* Ocultar para más espacio para el logo y nav */
-            .hero h1 { font-size: 28px; } /* Ajustado */
+            .user-actions .lang-selector, .user-actions .login-btn { display: none; }
+            .hero h1 { font-size: 28px; }
             .search-box { padding: 20px; }
-            .search-tabs .tab-btn { font-size: 14px; padding: 10px 10px; } /* Ajustado */
-            .cards-grid, .partner-benefits-grid { grid-template-columns: 1fr; }
-            .footer-links { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); } /* Ajustado */
+            .search-tabs .tab-btn { font-size: 14px; padding: 10px 10px; }
+            .cards-grid, .partner-benefits-grid, .success-grid, .news-grid { grid-template-columns: 1fr; }
+            .footer-links { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
              .btn-primary, .btn-secondary {
                 display: block;
-                width: 100%; /* Botones ocupan todo el ancho */
+                width: 100%;
                 margin-left: 0;
                 margin-right: 0;
             }
@@ -517,15 +588,15 @@
          @media (max-width: 480px) {
             .logo { font-size: 22px; }
             nav ul li { margin: 0 8px; }
-            nav ul li a { font-size: 13px; } /* Más pequeño */
+            nav ul li a { font-size: 13px; }
             .user-actions a { margin-left: 10px; }
             .hero { padding: 50px 0; }
             .hero h1 { font-size: 24px; }
-            .search-submit-btn { padding: 12px; font-size: 15px; } /* Ajustado */
-            .promo-cards h2, .partners-section h2 { font-size: 22px; } /* Ajustado */
-            .card h3 { font-size: 18px; } /* Ajustado */
-            .card p { font-size: 14px; } /* Ajustado */
-            .partners-intro { font-size: 15px; } /* Ajustado */
+            .search-submit-btn { padding: 12px; font-size: 15px; }
+            .section-title { font-size: 22px; }
+            .card h3, .success-story-card h3, .news-card h3 { font-size: 18px; }
+            .card p, .success-story-card p, .news-card p { font-size: 14px; }
+            .partners-intro, .section-subtitle { font-size: 15px; }
             .benefit-card { padding: 20px; }
         }
     </style>
@@ -539,10 +610,10 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="#" class="active">Productos</a></li> <!-- Marcado como activo para ejemplo -->
+                    <li><a href="#" class="active">Productos</a></li>
                     <li><a href="#">Soluciones</a></li>
                     <li><a href="#">Soporte</a></li>
-                    <li><a href="patners.html">Partners</a></li>
+                    <li><a href="/patners.html">Partners</a></li>
                     <li><a href="#">Comunidad</a></li>
                 </ul>
             </nav>
@@ -558,14 +629,14 @@
 
     <main>
         <section class="hero">
-            <div class="hero-content">
+            <div class="hero-content" data-aos="fade-in" data-aos-delay="200">
                 <h1>Descubre el Futuro de la Red con Cisco</h1>
                 <p class="hero-subtitle">Soluciones innovadoras para un mundo conectado y seguro.</p>
                 <div class="search-box">
                     <div class="search-tabs">
-                        <button class="tab-btn active">Buscar Soluciones</button>
-                        <button class="tab-btn">Consultar Productos</button>
-                        <button class="tab-btn">Recursos Técnicos</button>
+                        <button class="tab-btn active" data-placeholder="Ej: SD-WAN, Seguridad Cloud, Webex...">Buscar Soluciones</button>
+                        <button class="tab-btn" data-placeholder="Ej: Catalyst 9000, Meraki MR, Webex Room Kit...">Consultar Productos</button>
+                        <button class="tab-btn" data-placeholder="Ej: Guías de configuración, Hojas de datos...">Recursos Técnicos</button>
                     </div>
                     <form class="search-form">
                         <div class="form-group">
@@ -585,21 +656,21 @@
 
         <section class="promo-cards">
             <div class="container">
-                <h2>Innovaciones Destacadas de Cisco</h2>
+                <h2 class="section-title" data-aos="fade-up">Innovaciones Destacadas de Cisco</h2>
                 <div class="cards-grid">
-                    <div class="card">
+                    <div class="card" data-aos="fade-up" data-aos-delay="100">
                         <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Soluciones Cloud">
                         <h3>Soluciones Cloud Híbridas</h3>
                         <p>Integra y gestiona tus entornos cloud con la flexibilidad y seguridad que necesitas.</p>
                         <a href="#" class="card-link">Descubre Más →</a>
                     </div>
-                    <div class="card">
+                    <div class="card" data-aos="fade-up" data-aos-delay="200">
                         <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Seguridad de Red">
                         <h3>Seguridad de Red Avanzada</h3>
                         <p>Protege tu infraestructura crítica con nuestras soluciones de ciberseguridad de última generación.</p>
                         <a href="#" class="card-link">Ver Soluciones →</a>
                     </div>
-                    <div class="card">
+                    <div class="card" data-aos="fade-up" data-aos-delay="300">
                         <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Colaboración Inteligente">
                         <h3>Colaboración Inteligente</h3>
                         <p>Transforma la forma en que tus equipos trabajan juntos con Webex y nuestras herramientas.</p>
@@ -609,33 +680,98 @@
             </div>
         </section>
 
+        <section class="customer-success-section">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">Casos de Éxito de Nuestros Clientes</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Vea cómo hemos ayudado a empresas como la suya a alcanzar sus objetivos.</p>
+                <div class="success-grid">
+                    <div class="success-story-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="client-logo-placeholder">Logo Empresa Alfa</div>
+                        <h3>Transformación Digital en Retail</h3>
+                        <p>"Las soluciones de Cisco nos permitieron optimizar nuestra red y mejorar la experiencia del cliente en un 30%."</p>
+                        <a href="#" class="card-link">Leer Caso Completo →</a>
+                    </div>
+                    <div class="success-story-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="client-logo-placeholder">Logo Banco Beta</div>
+                        <h3>Seguridad Reforzada en Sector Financiero</h3>
+                        <p>"Con Cisco Secure, hemos fortalecido nuestras defensas contra ciberamenazas y cumplimos con las regulaciones más exigentes."</p>
+                        <a href="#" class="card-link">Leer Caso Completo →</a>
+                    </div>
+                    <div class="success-story-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="client-logo-placeholder">Logo Hospital Gamma</div>
+                        <h3>Mejora de la Colaboración en Salud</h3>
+                        <p>"Webex ha revolucionado la comunicación entre nuestro personal médico, mejorando la atención al paciente."</p>
+                        <a href="#" class="card-link">Leer Caso Completo →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="latest-news-section">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">Últimas Noticias y Tendencias</h2>
+                <div class="news-grid">
+                    <div class="news-card" data-aos="fade-up" data-aos-delay="100">
+                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Blog post image">
+                        <h3>El Futuro de la IA en Networking</h3>
+                        <p class="news-date">20 de Octubre, 2023</p>
+                        <p>Descubre cómo la inteligencia artificial está revolucionando la gestión y seguridad de las redes empresariales.</p>
+                        <a href="#" class="card-link">Leer Más →</a>
+                    </div>
+                    <div class="news-card" data-aos="fade-up" data-aos-delay="200">
+                        <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Webinar image">
+                        <h3>Webinar: Maximizando la Seguridad en la Nube</h3>
+                        <p class="news-date">Próximo: 5 de Noviembre, 2023</p>
+                        <p>Únete a nuestros expertos para aprender estrategias clave para proteger tus activos en entornos multi-cloud.</p>
+                        <a href="#" class="card-link">Registrarse →</a>
+                    </div>
+                    <div class="news-card" data-aos="fade-up" data-aos-delay="300">
+                        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Product launch image">
+                        <h3>Nuevo Cisco Catalyst Serie X: Potencia y Eficiencia</h3>
+                        <p class="news-date">10 de Octubre, 2023</p>
+                        <p>Presentamos la nueva generación de switches diseñados para las demandas de la red moderna.</p>
+                        <a href="#" class="card-link">Conocer Más →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
         <section class="partners-section">
             <div class="container">
-                <h2>Conviértete en Partner de Cisco</h2>
-                <p class="partners-intro">Únete a nuestro ecosistema de partners y accede a beneficios exclusivos, recursos y oportunidades para crecer tu negocio con las soluciones líderes de la industria.</p>
+                <h2 class="section-title" data-aos="fade-up">Conviértete en Partner de Cisco</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Únete a nuestro ecosistema de partners y accede a beneficios exclusivos, recursos y oportunidades para crecer tu negocio con las soluciones líderes de la industria.</p>
                 <div class="partner-benefits-grid">
-                    <div class="benefit-card">
-                        <div class="benefit-icon-placeholder">[Icono Oportunidad]</div>
+                    <div class="benefit-card" data-aos="fade-right" data-aos-delay="200">
+                        <div class="benefit-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg> <!-- Icono de bombilla/idea -->
+                        </div>
                         <h4>Nuevas Oportunidades</h4>
                         <p>Expande tu alcance y accede a nuevos mercados con el respaldo de Cisco.</p>
                     </div>
-                    <div class="benefit-card">
-                        <div class="benefit-icon-placeholder">[Icono Recursos]</div>
+                    <div class="benefit-card" data-aos="fade-right" data-aos-delay="300">
+                        <div class="benefit-icon">
+                             <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l2 2H20v10zm-2-6H6v-2h12v2zm-4 4H6v-2h8v2z"/></svg> <!-- Icono de libro/recursos -->
+                        </div>
                         <h4>Recursos y Formación</h4>
                         <p>Capacitación de clase mundial, herramientas de marketing y soporte técnico especializado.</p>
                     </div>
-                    <div class="benefit-card">
-                        <div class="benefit-icon-placeholder">[Icono Innovación]</div>
+                    <div class="benefit-card" data-aos="fade-left" data-aos-delay="300">
+                        <div class="benefit-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 .9C7.09.9 3.14 4.84 3.14 9.75c0 2.4.97 4.58 2.56 6.17L12 23.1l6.3-7.18c1.59-1.59 2.56-3.77 2.56-6.17C20.86 4.84 16.91.9 12 .9zm0 14.85c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg> <!-- Icono de cohete/innovación -->
+                        </div>
                         <h4>Innovación Constante</h4>
                         <p>Sé parte de la vanguardia tecnológica y ofrece soluciones de futuro a tus clientes.</p>
                     </div>
-                    <div class="benefit-card">
-                        <div class="benefit-icon-placeholder">[Icono Comunidad]</div>
+                    <div class="benefit-card" data-aos="fade-left" data-aos-delay="200">
+                        <div class="benefit-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg> <!-- Icono de comunidad/grupo -->
+                        </div>
                         <h4>Comunidad Global</h4>
                         <p>Conecta con otros partners, comparte experiencias y colabora en proyectos.</p>
                     </div>
                 </div>
-                <div class="partner-cta">
+                <div class="partner-cta" data-aos="fade-up">
                     <a href="#" class="btn-primary">Únete al Programa de Partners</a>
                     <a href="#" class="btn-secondary">Más Información</a>
                 </div>
@@ -646,7 +782,7 @@
     <footer>
         <div class="container">
             <div class="footer-links">
-                <div>
+                <div data-aos="fade-up" data-aos-delay="100">
                     <h4>Acerca de Cisco</h4>
                     <ul>
                         <li><a href="#">Quiénes Somos</a></li>
@@ -655,7 +791,7 @@
                         <li><a href="#">Inversores</a></li>
                     </ul>
                 </div>
-                <div>
+                <div data-aos="fade-up" data-aos-delay="200">
                     <h4>Soporte</h4>
                     <ul>
                         <li><a href="#">Contactar Soporte</a></li>
@@ -664,31 +800,61 @@
                         <li><a href="#">Documentación</a></li>
                     </ul>
                 </div>
-                <div>
+                <div data-aos="fade-up" data-aos-delay="300">
                     <h4>Recursos</h4>
                     <ul>
                         <li><a href="#">Blogs</a></li>
                         <li><a href="#">Eventos</a></li>
-                        <li><a href="#">Partners</a></li>
+                        <li><a href="partners.html">Partners</a></li>
                         <li><a href="#">Desarrolladores</a></li>
                     </ul>
                 </div>
-                <div>
+                <div data-aos="fade-up" data-aos-delay="400">
                     <h4>Síguenos</h4>
                     <div class="social-media">
-                        <!-- Idealmente usarías iconos SVG o de fuente aquí -->
-                        <a href="#" aria-label="Facebook">FB</a>
-                        <a href="#" aria-label="Twitter">TW</a>
-                        <a href="#" aria-label="LinkedIn">LI</a>
-                        <a href="#" aria-label="YouTube">YT</a>
+                        <a href="#" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <svg viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+                        </a>
+                        <a href="#" aria-label="YouTube">
+                           <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        </a>
                     </div>
                 </div>
             </div>
             <div class="copyright">
-                © 2023 Cisco Systems, Inc. y/o sus filiales. Todos los derechos reservados. | <a href="#">Privacidad</a> | <a href="#">Términos</a> | <a href="#">Cookies</a>
+                © 2024 Cisco Systems, Inc. y/o sus filiales. Todos los derechos reservados. | <a href="#">Privacidad</a> | <a href="#">Términos</a> | <a href="#">Cookies</a>
             </div>
         </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> <!-- AOS JS -->
+    <script>
+        // Inicializar AOS
+        AOS.init({
+            duration: 800, // Duración de la animación
+            once: true,    // Si la animación debe ocurrir solo una vez
+        });
+
+        // Funcionalidad para los tabs del buscador en Hero Section
+        const searchTabs = document.querySelectorAll('.search-tabs .tab-btn');
+        const searchInput = document.getElementById('search-main');
+
+        searchTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Quitar clase 'active' de todos los tabs
+                searchTabs.forEach(t => t.classList.remove('active'));
+                // Añadir clase 'active' al tab clickeado
+                tab.classList.add('active');
+                // Cambiar el placeholder del input
+                searchInput.placeholder = tab.dataset.placeholder;
+            });
+        });
+    </script>
 </body>
 </html>
