@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cisco - Soporte</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> <!-- AOS CSS -->
+    <style>
+        /* Reseteo básico y fuentes */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            background-color: #f4f6f8;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Barra superior */
+        .top-bar {
+            height: 5px;
+            background-color: #a8b8c0;
+        }
+
+        /* Header */
+        header {
+            background-color: #fff;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a,
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: #005073;
+            letter-spacing: -1px;
+            text-decoration: none;
+        }
+
+        nav {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 18px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: #005073;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            text-decoration: none;
+            color: #4a4a4a;
+            margin-left: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        .user-actions a:first-child {
+            margin-left: 0;
+        }
+
+        .user-actions .login-btn {
+            background-color: #0073b1;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-actions .login-btn:hover {
+            background-color: #005073;
+        }
+
+        .user-actions .search-icon svg,
+        .social-media svg {
+            stroke: #4a4a4a;
+            fill: none;
+            transition: stroke 0.3s ease, fill 0.3s ease;
+        }
+        .user-actions .search-icon:hover svg {
+            stroke: #005073;
+        }
+        .social-media a:hover svg {
+            fill: #fff;
+            stroke: #fff;
+        }
+
+        .arrow-down {
+            font-size: 0.7em;
+            margin-left: 5px;
+        }
+
+        /* Main Content Padding */
+        main {
+            padding-top: 20px;
+        }
+
+        /* Hero Section Específico para Soporte */
+        .support-hero {
+            background-color: #0073b1; /* Un azul un poco más claro para diferenciar de Soluciones */
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .support-hero h1 {
+            font-size: 38px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .support-hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 20px auto;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+         .support-hero .search-box-support { /* Buscador específico para soporte */
+            max-width: 600px;
+            margin: 30px auto 0;
+            background-color: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .support-hero .search-box-support input[type="text"] {
+            width: calc(100% - 110px); /* Ajustar ancho para el botón */
+            padding: 12px;
+            border: 1px solid #fff;
+            border-radius: 4px 0 0 4px;
+            box-sizing: border-box;
+            font-size: 15px;
+            background-color: #fff;
+            color: #333;
+        }
+        .support-hero .search-box-support button {
+            width: 100px;
+            padding: 12px;
+            background-color: #005073;
+            color: white;
+            border: 1px solid #005073;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            vertical-align: top; /* Alinear con el input */
+        }
+        .support-hero .search-box-support button:hover {
+            background-color: #003f5a;
+        }
+
+
+        /* Estilo común para títulos de sección */
+        .section-title {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 40px;
+            margin-top: 60px;
+            color: #005073;
+            font-weight: 700;
+        }
+        .section-subtitle {
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.7;
+            color: #555;
+            max-width: 800px;
+            margin: -20px auto 40px auto;
+        }
+
+        /* Quick Help Section */
+        .quick-help-section {
+            padding: 40px 0;
+            background-color: #f9f9f9;
+        }
+
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .help-card {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .help-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .help-icon {
+            margin-bottom: 15px;
+            color: #0073b1;
+        }
+        .help-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: currentColor;
+        }
+
+        .help-card h3 {
+            font-size: 20px;
+            color: #005073;
+            margin-bottom: 10px;
+            font-weight: 500; /* Un poco más ligero para estos títulos */
+        }
+
+        .help-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+
+        .help-card .btn-link { /* Botón como enlace */
+            color: #0073b1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .help-card .btn-link:hover {
+            text-decoration: underline;
+            color: #005073;
+        }
+
+        /* Popular Resources Section */
+        .popular-resources {
+            padding: 40px 0;
+            background-color: #fff;
+        }
+        .resource-list {
+            list-style: none;
+            padding: 0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .resource-list li {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            border-left: 4px solid #0073b1;
+        }
+        .resource-list li a {
+            text-decoration: none;
+            color: #005073;
+            font-weight: 500;
+            font-size: 16px;
+            display: block; /* Para que ocupe todo el espacio */
+        }
+        .resource-list li a:hover {
+            color: #003f5a;
+        }
+        .resource-list li span { /* Para descripción breve o tipo de recurso */
+            display: block;
+            font-size: 13px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        /* Contact Support Section */
+        .contact-support-section {
+            padding: 60px 0;
+            background-color: #e6f3f9; /* Un fondo azul claro */
+            text-align: center;
+        }
+        .contact-support-section h2 { /* Hereda de .section-title, pero podemos ajustar */
+            margin-top: 0; /* Quitar margen superior si es la primera sección */
+        }
+        .contact-support-section p {
+            font-size: 18px;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+        .btn-primary, .btn-secondary { /* Estilos de botones reutilizados */
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            margin: 10px 5px;
+            min-width: 180px;
+            box-sizing: border-box;
+        }
+        .btn-primary {
+            background-color: #0073b1;
+            color: #fff;
+            border: 1px solid #0073b1;
+        }
+        .btn-primary:hover {
+            background-color: #005073;
+            border-color: #005073;
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: #0073b1;
+            border: 1px solid #0073b1;
+        }
+        .btn-secondary:hover {
+            background-color: #cce7f5; /* Un hover más claro para este fondo */
+            color: #005073;
+            border-color: #005073;
+        }
+
+
+        /* Footer */
+        footer {
+            background-color: #333a40;
+            color: #adb5bd;
+            padding: 50px 0 30px;
+            font-size: 14px;
+            margin-top: 0;
+        }
+        /* ... (Resto de estilos del footer son iguales a las otras páginas) ... */
+        .footer-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .footer-links h4 { color: #fff; font-size: 16px; margin-bottom: 15px; font-weight: 500; }
+        .footer-links ul { list-style: none; padding: 0; margin: 0; }
+        .footer-links ul li a { color: #adb5bd; text-decoration: none; line-height: 2.0; transition: color 0.3s ease, padding-left 0.3s ease; }
+        .footer-links ul li a:hover { color: #fff; padding-left: 5px; }
+        .social-media { display: flex; }
+        .social-media a { color: #adb5bd; margin-right: 15px; text-decoration: none; display: inline-block; }
+        .social-media a svg { width: 20px; height: 20px; fill: #adb5bd; stroke: none; transition: fill 0.3s ease; }
+        .social-media a:hover svg { fill: #fff; }
+        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid #495057; font-size: 13px; color: #868e96; }
+        .copyright a { color: #adb5bd; text-decoration: none; }
+        .copyright a:hover { text-decoration: underline; color: #fff; }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            header .container { flex-wrap: wrap; }
+            nav { order: 3; width: 100%; justify-content: flex-start; margin-top: 15px; overflow-x: auto; padding-bottom: 10px; }
+            nav ul { justify-content: flex-start; flex-wrap: nowrap; }
+            nav ul li { margin: 0 12px; }
+            .user-actions { margin-left: auto; }
+            .support-hero h1 { font-size: 32px; }
+            .support-hero p { font-size: 16px; }
+            .section-title { font-size: 26px; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 10px; }
+            .logo a, .logo { font-size: 28px; }
+            .user-actions .lang-selector, .user-actions .login-btn { display: none; }
+            .help-grid { grid-template-columns: 1fr; }
+            .footer-links { grid-template-columns: 1fr; }
+            .support-hero .search-box-support input[type="text"] { width: calc(100% - 90px); } /* Ajustar para botón más pequeño */
+            .support-hero .search-box-support button { width: 80px; }
+            .btn-primary, .btn-secondary { display: block; width: 100%; margin-left:0; margin-right:0; }
+        }
+         @media (max-width: 480px) {
+            .logo a, .logo { font-size: 22px; }
+            nav ul li { margin: 0 8px; }
+            nav ul li a { font-size: 13px; }
+            .user-actions a { margin-left: 10px; }
+            .support-hero { padding: 40px 0; }
+            .support-hero h1 { font-size: 26px; }
+            .section-title { font-size: 22px; }
+            .help-card h3 { font-size: 18px; }
+            .help-card p { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar"></div>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">CISCO</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/index.html">Productos</a></li>
+                    <li><a href="/soluciones.html">Soluciones</a></li> 
+                    <li><a href="/soporte.html" class="active">Soporte</a></li>  
+                    <li><a href="/patners.html">Partners</a></li> 
+                    <li><a href="/comunidad.html">Comunidad</a></li> 
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <a href="#" class="lang-selector">ES <span class="arrow-down">▼</span></a>
+                <a href="#" class="login-btn">Iniciar Sesión</a>
+                <a href="#" class="search-icon" aria-label="Buscar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="support-hero">
+            <div class="container" data-aos="fade-in">
+                <h1>Estamos Aquí para Ayudarte</h1>
+                <p>Encuentra la información, los recursos y el soporte que necesitas para aprovechar al máximo tus soluciones Cisco.</p>
+                <div class="search-box-support">
+                    <input type="text" placeholder="Buscar en Soporte (ej: configurar VPN, error 503...)">
+                    <button type="submit">Buscar</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="quick-help-section">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">Encuentra Ayuda Rápidamente</h2>
+                <div class="help-grid">
+                    <div class="help-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="help-icon">
+                            <svg viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M10,12.5L12,10.5L14,12.5V19H10V12.5Z" /></svg> <!-- Icono Documento -->
+                        </div>
+                        <h3>Documentación Técnica</h3>
+                        <p>Accede a guías de instalación, configuración, hojas de datos y manuales de usuario detallados.</p>
+                        <a href="#" class="btn-link">Explorar Documentación →</a>
+                    </div>
+                    <div class="help-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="help-icon">
+                            <svg viewBox="0 0 24 24"><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" /></svg> <!-- Icono Descarga -->
+                        </div>
+                        <h3>Descargas de Software</h3>
+                        <p>Obtén las últimas versiones de firmware, software, parches y herramientas para tus productos.</p>
+                        <a href="#" class="btn-link">Ir a Descargas →</a>
+                    </div>
+                    <div class="help-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="help-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42L5.5,9.94L6.53,11.5C6.08,11.85 5.56,12 5,12A3,3 0 0,1 2,9A3,3 0 0,1 5,6C5.56,6 6.08,6.15 6.53,6.42L5.5,7.94L6.53,9.5C6.08,9.85 5.56,10 5,10C3.9,10 3,9.55 3,9C3,8.45 3.9,8 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C18.44,14 17.92,13.85 17.47,13.58L18.5,12.06L17.47,10.5C17.92,10.15 18.44,10 19,10C20.1,10 21,10.45 21,11C21,11.55 20.1,12 19,12C18.44,12 17.92,11.85 17.47,11.58L18.5,10.06L17.47,8.5C17.92,8.15 18.44,8 19,8M12,14.5C14.25,14.5 17.44,15.5 18.5,17.11L17.06,18.5C16.25,17.44 14.05,16.5 12,16.5C9.95,16.5 7.75,17.44 6.94,18.5L5.5,17.11C6.56,15.5 9.75,14.5 12,14.5Z" /></svg> <!-- Icono Comunidad -->
+                        </div>
+                        <h3>Comunidad de Soporte</h3>
+                        <p>Conéctate con otros usuarios, haz preguntas y comparte conocimientos en nuestros foros.</p>
+                        <a href="comunidad.html" class="btn-link">Visitar Comunidad →</a>
+                    </div>
+                    <div class="help-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="help-icon">
+                            <svg viewBox="0 0 24 24"><path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z" /></svg> <!-- Icono Teléfono/Contacto -->
+                        </div>
+                        <h3>Contactar Soporte</h3>
+                        <p>Si no encuentras lo que buscas, nuestro equipo de expertos está listo para ayudarte directamente.</p>
+                        <a href="#contact-support" class="btn-link">Ver Opciones de Contacto →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="popular-resources">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">Recursos Populares de Soporte</h2>
+                <ul class="resource-list" data-aos="fade-up" data-aos-delay="100">
+                    <li>
+                        <a href="#">Guía de Configuración Inicial para Routers ISR 4000</a>
+                        <span>Guía paso a paso para la puesta en marcha.</span>
+                    </li>
+                    <li>
+                        <a href="#">Solución de Problemas Comunes en Conexiones VPN AnyConnect</a>
+                        <span>Diagnostica y resuelve los problemas más frecuentes.</span>
+                    </li>
+                    <li>
+                        <a href="#">Actualización de Firmware para Switches Catalyst 9200</a>
+                        <span>Instrucciones y mejores prácticas para actualizar.</span>
+                    </li>
+                    <li>
+                        <a href="#">Entendiendo las Licencias Smart de Cisco</a>
+                        <span>Todo lo que necesitas saber sobre la gestión de licencias.</span>
+                    </li>
+                     <li>
+                        <a href="#">Cómo Abrir un Caso de Soporte (TAC)</a>
+                        <span>Proceso para solicitar asistencia técnica especializada.</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="contact-support-section" id="contact-support">
+            <div class="container" data-aos="zoom-in">
+                <h2 class="section-title">¿Necesitas Ayuda Personalizada?</h2>
+                <p>Nuestro equipo de soporte técnico está disponible para asistirte con cualquier consulta o problema que puedas tener. Elige la opción que mejor se adapte a tus necesidades.</p>
+                <div class="contact-buttons">
+                    <a href="#" class="btn-primary">Abrir un Caso Online</a>
+                    <a href="#" class="btn-secondary">Encontrar un Partner de Soporte</a>
+                    <!-- Podrías añadir un número de teléfono si es relevante -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <h4>Acerca de Cisco</h4>
+                    <ul>
+                        <li><a href="#">Quiénes Somos</a></li>
+                        <li><a href="#">Noticias</a></li>
+                        <li><a href="#">Carreras</a></li>
+                        <li><a href="#">Inversores</a></li>
+                    </ul>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li><a href="#">Contactar Soporte</a></li>
+                        <li><a href="#">Descargas</a></li>
+                        <li><a href="comunidad.html">Comunidad</a></li>
+                        <li><a href="#">Documentación</a></li>
+                    </ul>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#">Blogs</a></li>
+                        <li><a href="#">Eventos</a></li>
+                        <li><a href="partners.html">Partners</a></li>
+                        <li><a href="#">Desarrolladores</a></li>
+                    </ul>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="400">
+                    <h4>Síguenos</h4>
+                    <div class="social-media">
+                        <a href="#" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <svg viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+                        </a>
+                        <a href="#" aria-label="YouTube">
+                           <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2024 Cisco Systems, Inc. y/o sus filiales. Todos los derechos reservados. | <a href="#">Privacidad</a> | <a href="#">Términos</a> | <a href="#">Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> <!-- AOS JS -->
+    <script>
+        // Inicializar AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100,
+        });
+    </script>
+</body>
+</html>

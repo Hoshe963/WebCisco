@@ -14,20 +14,20 @@
             font-family: 'Roboto', sans-serif;
             color: #333;
             background-color: #f4f6f8;
-            scroll-behavior: smooth; /* Opcional: para scroll suave */
+            scroll-behavior: smooth;
         }
 
         .container {
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px; /* Añade padding para que el contenido no toque los bordes */
+            padding: 0 15px;
         }
 
         /* Barra superior */
         .top-bar {
             height: 5px;
-            background-color: #a8b8c0; /* Color de la barra superior */
+            background-color: #a8b8c0;
         }
 
         /* Header */
@@ -36,7 +36,7 @@
             padding: 20px 0;
             border-bottom: 1px solid #e0e0e0;
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            position: sticky; /* Header fijo */
+            position: sticky;
             top: 0;
             z-index: 1000;
         }
@@ -47,13 +47,13 @@
             align-items: center;
         }
 
-        .logo a, /* Hacer el logo un enlace */
+        .logo a,
         .logo {
             font-size: 32px;
             font-weight: 700;
-            color: #005073; /* Azul Cisco */
+            color: #005073;
             letter-spacing: -1px;
-            text-decoration: none; /* Quitar subrayado si es enlace */
+            text-decoration: none;
         }
 
         nav {
@@ -75,15 +75,15 @@
 
         nav ul li a {
             text-decoration: none;
-            color: #4a4a4a; /* Gris oscuro para los links */
+            color: #4a4a4a;
             font-weight: 500;
             font-size: 16px;
             transition: color 0.3s ease;
         }
 
         nav ul li a:hover,
-        nav ul li a.active { /* Para una página activa */
-            color: #005073; /* Azul Cisco al pasar el ratón */
+        nav ul li a.active {
+            color: #005073;
         }
 
         .user-actions {
@@ -104,7 +104,7 @@
         }
 
         .user-actions .login-btn {
-            background-color: #0073b1; /* Azul Cisco/LATAM más estándar */
+            background-color: #0073b1;
             color: white;
             padding: 8px 18px;
             border-radius: 4px;
@@ -113,11 +113,11 @@
         }
 
         .user-actions .login-btn:hover {
-            background-color: #005073; /* Azul más oscuro */
+            background-color: #005073;
         }
 
         .user-actions .search-icon svg,
-        .social-media svg { /* Estilo común para SVGs de iconos */
+        .social-media svg {
             stroke: #4a4a4a;
             fill: none;
             transition: stroke 0.3s ease, fill 0.3s ease;
@@ -125,29 +125,27 @@
         .user-actions .search-icon:hover svg {
             stroke: #005073;
         }
-         .social-media a:hover svg { /* Específico para iconos sociales en footer */
-            fill: #fff; /* O el color que prefieras para el hover */
+         .social-media a:hover svg {
+            fill: #fff;
             stroke: #fff;
         }
-
 
         .arrow-down {
             font-size: 0.7em;
             margin-left: 5px;
         }
 
-        /* Main content (para espaciado si el header es sticky) */
+        /* Main content */
         main {
-            padding-top: 20px; /* Espacio para que el contenido no se solape con el header sticky */
+            padding-top: 20px;
         }
-
 
         /* Partners Section */
         .partners-section {
-            padding: 40px 0 60px 0; /* Ajustado padding superior por el margen de 'main' */
+            padding: 40px 0 60px 0;
             background-color: #fff;
         }
-        .partners-section h2.section-title { /* Usamos section-title para consistencia */
+        .partners-section h2.section-title {
             text-align: center;
             font-size: 30px;
             margin-bottom: 20px;
@@ -170,179 +168,99 @@
         }
         .benefit-card {
             background-color: #f9f9f9;
-            padding: 30px;
+            padding: 25px; /* Ajustado para el avatar */
             border-radius: 8px;
             text-align: center;
             border: 1px solid #e0e0e0;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex; /* Para alinear contenido verticalmente si es necesario */
-            flex-direction: column; /* Para alinear contenido verticalmente */
-            justify-content: space-between; /* Para que el contenido se distribuya */
+            display: flex;
+            flex-direction: column;
+            /* justify-content: space-between; No es necesario si el avatar está arriba */
         }
         .benefit-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
-        .benefit-icon-placeholder {
-            font-size: 14px;
+
+        /* Estilo para el avatar del miembro/líder */
+        .member-avatar-partner {
+            width: 90px; /* Tamaño del avatar */
+            height: 90px;
+            border-radius: 50%;
+            margin: 0 auto 15px; /* Centrado y con espacio abajo */
+            background-color: #ccc; /* Color de fondo si no hay imagen */
+            background-size: cover;
+            background-position: center;
+            border: 3px solid #fff; /* Borde opcional */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .benefit-icon-placeholder { /* Mantenido para el texto LÍDER/EQUIPO */
+            font-size: 12px; /* Más pequeño */
             color: #0073b1;
-            margin-bottom: 15px;
-            font-weight: 500;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-transform: uppercase; /* Para que se vea como los originales CPP/PPC */
+            margin-bottom: 5px; /* Menos espacio si el avatar está arriba */
+            font-weight: 700; /* Más grueso */
+            text-transform: uppercase;
+            /* height: auto; Ya no necesita altura fija */
         }
         .benefit-card h4 {
-            font-size: 20px;
+            font-size: 18px; /* Ligeramente más pequeño para dar espacio al avatar */
             color: #005073;
             margin-bottom: 10px;
             font-weight: 700;
-            text-transform: uppercase; /* Para que los nombres se vean como los originales */
+            text-transform: uppercase;
         }
         .benefit-card p {
-            font-size: 15px;
+            font-size: 14px; /* Ligeramente más pequeño */
             line-height: 1.6;
             color: #555;
-            flex-grow: 1; /* Para que el párrafo ocupe el espacio disponible */
+            flex-grow: 1;
         }
 
-        /* Footer */
-        footer {
-            background-color: #333a40;
-            color: #adb5bd;
-            padding: 50px 0 30px;
-            font-size: 14px;
-            margin-top: 40px; /* Espacio antes del footer */
-        }
-
-        .footer-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .footer-links h4 {
-            color: #fff;
-            font-size: 16px;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        .footer-links ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-links ul li a {
-            color: #adb5bd;
-            text-decoration: none;
-            line-height: 2.0;
-            transition: color 0.3s ease, padding-left 0.3s ease;
-        }
-
-        .footer-links ul li a:hover {
-            color: #fff;
-            padding-left: 5px;
-        }
-
-        .social-media {
-            display: flex;
-        }
-        .social-media a {
-            color: #adb5bd;
-            margin-right: 15px;
-            text-decoration: none;
-            display: inline-block;
-        }
-         .social-media a svg {
-            width: 20px;
-            height: 20px;
-            fill: #adb5bd;
-            stroke: none;
-            transition: fill 0.3s ease;
-        }
-        .social-media a:hover svg {
-            fill: #fff;
-        }
-
-
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid #495057;
-            font-size: 13px;
-            color: #868e96;
-        }
-        .copyright a {
-            color: #adb5bd;
-            text-decoration: none;
-        }
-        .copyright a:hover {
-            text-decoration: underline;
-            color: #fff;
-        }
+        /* Footer (igual a las otras páginas) */
+        footer { background-color: #333a40; color: #adb5bd; padding: 50px 0 30px; font-size: 14px; margin-top: 40px; }
+        /* ... (Resto de estilos del footer son iguales a las otras páginas) ... */
+        .footer-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .footer-links h4 { color: #fff; font-size: 16px; margin-bottom: 15px; font-weight: 500; }
+        .footer-links ul { list-style: none; padding: 0; margin: 0; }
+        .footer-links ul li a { color: #adb5bd; text-decoration: none; line-height: 2.0; transition: color 0.3s ease, padding-left 0.3s ease; }
+        .footer-links ul li a:hover { color: #fff; padding-left: 5px; }
+        .social-media { display: flex; }
+        .social-media a { color: #adb5bd; margin-right: 15px; text-decoration: none; display: inline-block; }
+        .social-media a svg { width: 20px; height: 20px; fill: #adb5bd; stroke: none; transition: fill 0.3s ease; }
+        .social-media a:hover svg { fill: #fff; }
+        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid #495057; font-size: 13px; color: #868e96; }
+        .copyright a { color: #adb5bd; text-decoration: none; }
+        .copyright a:hover { text-decoration: underline; color: #fff; }
 
 
         /* Responsive adjustments */
         @media (max-width: 992px) {
-            header .container {
-                flex-wrap: wrap;
-            }
-            nav {
-                order: 3;
-                width: 100%;
-                justify-content: flex-start;
-                margin-top: 15px;
-                overflow-x: auto;
-                padding-bottom: 10px;
-            }
-            nav ul {
-                justify-content: flex-start;
-                flex-wrap: nowrap;
-            }
-            nav ul li {
-                margin: 0 12px;
-            }
-            .user-actions {
-                margin-left: auto;
-            }
-            .partners-section h2.section-title {
-                font-size: 26px;
-            }
+            header .container { flex-wrap: wrap; }
+            nav { order: 3; width: 100%; justify-content: flex-start; margin-top: 15px; overflow-x: auto; padding-bottom: 10px; }
+            nav ul { justify-content: flex-start; flex-wrap: nowrap; }
+            nav ul li { margin: 0 12px; }
+            .user-actions { margin-left: auto; }
+            .partners-section h2.section-title { font-size: 26px; }
         }
-
         @media (max-width: 768px) {
             .container { padding: 0 10px; }
             .logo a, .logo { font-size: 28px; }
             .user-actions .lang-selector, .user-actions .login-btn { display: none; }
-            .partners-intro {
-                font-size: 16px;
-            }
+            .partners-intro { font-size: 16px; }
             .partner-benefits-grid, .footer-links { grid-template-columns: 1fr; }
-             .btn-primary, .btn-secondary { /* Si tienes botones CTA en esta página */
-                display: block;
-                width: 100%;
-                margin-left: 0;
-                margin-right: 0;
-            }
         }
-         @media (max-width: 480px) {
+        @media (max-width: 480px) {
             .logo a, .logo { font-size: 22px; }
             nav ul li { margin: 0 8px; }
             nav ul li a { font-size: 13px; }
             .user-actions a { margin-left: 10px; }
-            .partners-section {
-                padding-top: 20px; /* Menos padding en móvil */
-            }
-            .partners-section h2.section-title {
-                font-size: 22px;
-            }
+            .partners-section { padding-top: 20px; }
+            .partners-section h2.section-title { font-size: 22px; }
             .benefit-card { padding: 20px; }
-            .benefit-card h4 { font-size: 18px; } /* Ajuste para nombres largos en móvil */
+            .member-avatar-partner { width: 70px; height: 70px; } /* Avatar más pequeño en móvil */
+            .benefit-card h4 { font-size: 16px; }
+            .benefit-card p { font-size: 13px; }
         }
     </style>
 </head>
@@ -379,16 +297,19 @@
                 <p class="partners-intro" data-aos="fade-up" data-aos-delay="100">Conoce a los líderes que dirigen la visión y estrategia de nuestro ecosistema de partners, impulsando la innovación y el crecimiento conjunto.</p>
                 <div class="partner-benefits-grid">
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=LuisEduardo');"></div>
                         <div class="benefit-icon-placeholder">LÍDER</div>
                         <h4>LUIS EDUARDO</h4>
                         <p>Encabezando la estrategia y fomentando alianzas clave para el éxito del proyecto.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/girl?username=LissMozombite');"></div>
                         <div class="benefit-icon-placeholder">LÍDER</div>
                         <h4>LISS MOZOMBITE</h4>
                         <p>Liderando la innovación en soluciones y optimización de procesos para el equipo.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=JuanSolano');"></div>
                         <div class="benefit-icon-placeholder">LÍDER</div>
                         <h4>JUAN SOLANO</h4>
                         <p>Dirigiendo la implementación de tecnologías avanzadas y la arquitectura de soluciones.</p>
@@ -398,62 +319,75 @@
                 <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">EQUIPO TI</h2>
                 <p class="partners-intro" data-aos="fade-up" data-aos-delay="200">Nuestro talentoso equipo de TI está comprometido con el desarrollo, implementación y soporte de soluciones de vanguardia para nuestros clientes y partners.</p>
                 <div class="partner-benefits-grid">
+                    <!-- Genera un avatar para cada miembro del equipo -->
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=MarkLandeo');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>MARK LANDEO</h4>
                         <p>Impulsando la innovación tecnológica y la excelencia operativa dentro del equipo.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="250">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=AaronLopez');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>AARÓN LÓPEZ</h4>
                         <p>Gestionando recursos clave y asegurando la calidad en la entrega de soluciones.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/girl?username=CesiaPintado');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>CESIA PINTADO</h4>
                         <p>Especialista en análisis de datos y mejora continua de procesos.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="350">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=DiegoAlonso');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>DIEGO ALONSO</h4>
                         <p>Desarrollando soluciones robustas y escalables para nuestros partners.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=IsaitCamizan');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>ISAIT CAMIZAN</h4>
                         <p>Enfocado en la seguridad informática y la protección de la infraestructura.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="450">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=JoseFalcon');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>JOSÉ FALCÓN</h4>
                         <p>Brindando soporte técnico especializado y asegurando la satisfacción del cliente.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="500">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=JuanMatallana');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>JUAN MATALLANA</h4>
                         <p>Contribuyendo con soluciones creativas y eficientes para los desafíos TI.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="550">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=LesterSamuel');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>LESTER SAMUEL</h4>
                         <p>Dedicado a la gestión de proyectos y la coordinación de equipos técnicos.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="600">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/girl?username=MedalithBecerril');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>MEDALITH BECERRIL</h4>
                         <p>Optimizando la infraestructura tecnológica para un rendimiento superior.</p>
                     </div>
                      <div class="benefit-card" data-aos="fade-up" data-aos-delay="650">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=RomuloRenato');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>ROMULO RENATO</h4>
                         <p>Innovando en el desarrollo de software y aplicaciones personalizadas.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="700">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=YomerYsidro');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>YOMER YSIDRO</h4>
                         <p>Asegurando la calidad y fiabilidad de todas nuestras soluciones TI.</p>
                     </div>
                     <div class="benefit-card" data-aos="fade-up" data-aos-delay="750">
+                        <div class="member-avatar-partner" style="background-image: url('https://avatar.iran.liara.run/public/boy?username=CalebIzquierdo');"></div>
                         <div class="benefit-icon-placeholder">EQUIPO</div>
                         <h4>CALEB IZQUIERDO</h4>
                         <p>Apoyando en la investigación y adopción de tecnologías emergentes.</p>
@@ -521,9 +455,9 @@
     <script>
         // Inicializar AOS
         AOS.init({
-            duration: 800, // Duración de la animación en milisegundos
-            once: true,    // Si la animación debe ocurrir solo una vez al hacer scroll
-            offset: 100,   // (Opcional) offset (en px) desde el borde original del trigger point
+            duration: 800,
+            once: true,
+            offset: 100,
         });
     </script>
 </body>
