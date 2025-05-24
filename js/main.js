@@ -1,7 +1,40 @@
 // js/main.js
 document.addEventListener('DOMContentLoaded', function() {
 
+    // Datos de los temas de la comunidad (ahora globales dentro de este script)
+    const COMMUNITY_TOPICS_DATA = [
+        {
+            id: 1, avatar: "JS", bgColor: "#0073b1",
+            titleKey: "communityTopic1Title", // Clave para el título
+            author: "Juan Solano",
+            timeKey: "communityTime1",         // Clave para el tiempo
+            replies: 15, link: "#"
+        },
+        {
+            id: 2, avatar: "LM", bgColor: "#28a745",
+            titleKey: "communityTopic2Title",
+            author: "Liss Mozombite",
+            timeKey: "communityTime2",
+            replies: 8, link: "#"
+        },
+        {
+            id: 3, avatar: "CP", bgColor: "#dc3545",
+            titleKey: "communityTopic3Title",
+            author: "Cesia Pintado",
+            timeKey: "communityTime3",
+            replies: 22, link: "#"
+        },
+        {
+            id: 4, avatar: "ML", bgColor: "#ffc107", textColor: "#333",
+            titleKey: "communityTopic4Title",
+            author: "Mark Landeo",
+            timeKey: "communityTime4",
+            replies: 30, link: "#"
+        }
+    ];
+
     // --- 1. CARGAR COMPONENTES (NAVBAR, FOOTER, MODAL) ---
+    // ... (tu función loadComponent sin cambios) ...
     async function loadComponent(url, placeholderId) {
         try {
             const response = await fetch(url);
@@ -17,8 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 placeholder.innerHTML = text;
                 return true;
             } else {
-                // console.warn(`Placeholder con ID '${placeholderId}' no encontrado en esta página.`);
-                return false; 
+                return false;
             }
         } catch (error) {
             console.error(`Excepción al cargar componente desde ${url}:`, error);
@@ -28,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+
     async function loadAllSharedComponents() {
         const results = await Promise.all([
             loadComponent('includes/navbar.html', 'navbar-placeholder'),
@@ -35,32 +68,37 @@ document.addEventListener('DOMContentLoaded', function() {
         ]);
 
         if (results.every(result => result === true)) {
-            initializeNavbarScripts(); 
-            initializeLoginModalScripts(); 
-            applyInitialLanguage(); 
-            setActiveNavLink(); 
+            initializeNavbarScripts();
+            initializeLoginModalScripts();
+            // applyInitialLanguage se encargará de renderizar los temas con el idioma correcto
+            applyInitialLanguage();
+            setActiveNavLink();
         } else {
             console.error("No se pudieron cargar todos los componentes compartidos. Algunas funcionalidades podrían no estar disponibles.");
         }
-        
-        initializeAOS(); 
-        
+
+        initializeAOS();
+
         const path = window.location.pathname;
-        if (path.includes("index.html") || path === "/" || path.endsWith('/')) { 
+        const onIndexPage = path.includes("index.html") || path === "/" || path.endsWith('/');
+        // La lógica específica de la página de comunidad ahora se maneja principalmente a través de applyTranslations
+        // por lo que initializeCommunityPageScripts podría volverse más ligera o usarse para otras interacciones.
+        if (onIndexPage) {
              if (document.querySelector('.search-box .search-tabs')) {
                 initializeHeroSearchTabs();
             }
         }
-        if (path.includes("comunidad.html")) {
-            if (document.getElementById('topicsList')) {
-                initializeCommunityPageScripts(); // Asegúrate que esta función esté definida si la necesitas
-            }
+        // Si necesitas alguna inicialización específica para la página de comunidad que NO sea la traducción
+        // de la lista de temas (porque eso lo hace applyTranslations), la pones aquí.
+        const onComunidadPage = path.includes("comunidad.html");
+        if (onComunidadPage) {
+            initializeCommunityPageScripts();
         }
     }
 
     // --- 2. LÓGICA DE TRADUCCIÓN ---
     const translations = {
-        // --- CLAVES COMUNES (NAV, FOOTER, MODAL LOGIN, TÍTULOS DE PÁGINA POR DEFECTO) ---
+        // ... (tus traducciones existentes) ...
         pageTitle: { es: "Cisco Soluciones - Inspirado en LATAM", en: "Cisco Solutions - LATAM Inspired", pt: "Cisco Soluções - Inspirado na LATAM" },
         pageTitleSoluciones: { es: "Cisco - Soluciones", en: "Cisco - Solutions", pt: "Cisco - Soluções" },
         pageTitlePartners: { es: "Cisco - Partners", en: "Cisco - Partners", pt: "Cisco - Parceiros" },
@@ -99,12 +137,10 @@ document.addEventListener('DOMContentLoaded', function() {
         loginNoAccount: { es: "¿No tienes cuenta?", en: "Don't have an account?", pt: "Não tem uma conta?" },
         loginRegisterLink: { es: "Regístrate aquí", en: "Sign up here", pt: "Cadastre-se aqui" },
         loginForgotPasswordLink: { es: "¿Olvidaste tu contraseña?", en: "Forgot your password?", pt: "Esqueceu sua senha?" },
-        learnMoreLink: { es: "Descubre Más →", en: "Learn More →", pt: "Saiba Mais →" }, 
-        readMoreLink: { es: "Leer Más →", en: "Read More →", pt: "Leia Mais →" }, 
-        readFullCaseLink: { es: "Leer Caso Completo →", en: "Read Full Case →", pt: "Ler Caso Completo →" }, 
+        learnMoreLink: { es: "Descubre Más →", en: "Learn More →", pt: "Saiba Mais →" },
+        readMoreLink: { es: "Leer Más →", en: "Read More →", pt: "Leia Mais →" },
+        readFullCaseLink: { es: "Leer Caso Completo →", en: "Read Full Case →", pt: "Ler Caso Completo →" },
         searchButton: { es: "Buscar Ahora", en: "Search Now", pt: "Buscar Agora" },
-
-        // --- TRADUCCIONES ESPECÍFICAS DE INDEX.HTML ---
         heroTitle: { es: "Descubre el Futuro de la Red con Cisco", en: "Discover the Future of Networking with Cisco", pt: "Descubra o Futuro das Redes com a Cisco" },
         heroSubtitle: { es: "Soluciones innovadoras para un mundo conectado y seguro.", en: "Innovative solutions for a connected and secure world.", pt: "Soluções inovadoras para um mundo conectado e seguro." },
         searchTabSolutions: { es: "Buscar Soluciones", en: "Search Solutions", pt: "Buscar Soluções" },
@@ -154,8 +190,6 @@ document.addEventListener('DOMContentLoaded', function() {
         partnerBenefit4Desc: { es: "Conecta con otros partners, comparte experiencias y colabora en proyectos.", en: "Connect with other partners, share experiences, and collaborate on projects.", pt: "Conecte-se com outros parceiros, compartilhe experiências e colabore em projetos." },
         joinPartnersButton: { es: "Únete al Programa de Partners", en: "Join the Partner Program", pt: "Junte-se ao Programa de Parceiros" },
         moreInfoButton: { es: "Más Información", en: "More Information", pt: "Mais Informações" },
-
-        // --- TRADUCCIONES ESPECÍFICAS DE SOLUCIONES.HTML ---
         solutionsHeroTitle: { es: "Soluciones Integrales para Tu Negocio", en: "Comprehensive Solutions for Your Business", pt: "Soluções Abrangentes para o Seu Negócio" },
         solutionsHeroSubtitle: { es: "Descubre cómo nuestras tecnologías innovadoras pueden ayudarte a superar tus desafíos y alcanzar tus objetivos estratégicos.", en: "Discover how our innovative technologies can help you overcome your challenges and achieve your strategic goals.", pt: "Descubra como nossas tecnologias inovadoras podem ajudá-lo a superar seus desafios e alcançar seus objetivos estratégicos." },
         solutionAreasTitle: { es: "Nuestras Áreas de Solución", en: "Our Solution Areas", pt: "Nossas Áreas de Solução" },
@@ -182,8 +216,6 @@ document.addEventListener('DOMContentLoaded', function() {
         transformBusinessSubtitle: { es: "Nuestros expertos están listos para ayudarte a diseñar la solución perfecta para tus necesidades. Contáctanos para una consulta personalizada.", en: "Our experts are ready to help you design the perfect solution for your needs. Contact us for a personalized consultation.", pt: "Nossos especialistas estão prontos para ajudá-lo a projetar a solução perfeita para suas necessidades. Contate-nos para uma consulta personalizada." },
         contactSalesButton: { es: "Contactar a Ventas", en: "Contact Sales", pt: "Contatar Vendas" },
         exploreSuccessCasesButton: { es: "Explorar Casos de Éxito", en: "Explore Success Cases", pt: "Explorar Casos de Sucesso" },
-        
-        // --- TRADUCCIONES ESPECÍFICAS DE PARTNERS.HTML ---
         projectLeadersTitle: { es: "LIDERES DEL PROYECTO", en: "PROJECT LEADERS", pt: "LÍDERES DE PROJETO" },
         projectLeadersIntro: { es: "Conoce a los líderes que dirigen la visión y estrategia de nuestro ecosistema de partners, impulsando la innovación y el crecimiento conjunto.", en: "Meet the leaders who drive the vision and strategy of our partner ecosystem, fostering innovation and joint growth.", pt: "Conheça os líderes que conduzem a visão e estratégia do nosso ecossistema de parceiros, impulsionando a inovação e o crescimento conjunto." },
         leaderRole: { es: "LÍDER", en: "LEADER", pt: "LÍDER" },
@@ -205,8 +237,6 @@ document.addEventListener('DOMContentLoaded', function() {
         romuloRenatoDesc: { es: "Innovando en el desarrollo de software y aplicaciones personalizadas.", en: "Innovating in software development and custom applications.", pt: "Inovando no desenvolvimento de software e aplicativos personalizados." },
         yomerYsidroDesc: { es: "Asegurando la calidad y fiabilidad de todas nuestras soluciones TI.", en: "Ensuring the quality and reliability of all our IT solutions.", pt: "Assegurando a qualidade e confiabilidade de todas as nossas soluções de TI." },
         calebIzquierdoDesc: { es: "Apoyando en la investigación y adopción de tecnologías emergentes.", en: "Supporting research and adoption of emerging technologies.", pt: "Apoiando na pesquisa e adoção de tecnologias emergentes." },
-
-        // --- TRADUCCIONES ESPECÍFICAS DE SOPORTE.HTML ---
         supportHeroTitle: { es: "Estamos Aquí para Ayudarte", en: "We're Here to Help", pt: "Estamos Aqui para Ajudar" },
         supportHeroSubtitle: { es: "Encuentra la información, los recursos y el soporte que necesitas para aprovechar al máximo tus soluciones Cisco.", en: "Find the information, resources, and support you need to make the most of your Cisco solutions.", pt: "Encontre as informações, os recursos e o suporte que você precisa para aproveitar ao máximo suas soluções Cisco." },
         supportSearchPlaceholder: { es: "Buscar en Soporte (ej: configurar VPN, error 503...)", en: "Search Support (e.g., configure VPN, error 503...)", pt: "Buscar no Suporte (ex: configurar VPN, erro 503...)" },
@@ -238,8 +268,6 @@ document.addEventListener('DOMContentLoaded', function() {
         personalizedHelpDesc: { es: "Nuestro equipo de soporte técnico está disponible para asistirte con cualquier consulta o problema que puedas tener. Elige la opción que mejor se adapte a tus necesidades.", en: "Our technical support team is available to assist you with any questions or issues you may have. Choose the option that best suits your needs.", pt: "Nossa equipe de suporte técnico está disponível para ajudá-lo com quaisquer dúvidas ou problemas que você possa ter. Escolha a opção que melhor se adapta às suas necessidades." },
         openCaseButton: { es: "Abrir un Caso Online", en: "Open a Case Online", pt: "Abrir um Caso Online" },
         findSupportPartnerButton: { es: "Encontrar un Partner de Soporte", en: "Find a Support Partner", pt: "Encontrar um Parceiro de Suporte" },
-
-        // --- TRADUCCIONES ESPECÍFICAS DE COMUNIDAD.HTML ---
         communityHeroTitle: { es: "Bienvenido a la Comunidad Cisco", en: "Welcome to the Cisco Community", pt: "Bem-vindo à Comunidade Cisco" },
         communityHeroSubtitle: { es: "Conecta, colabora y comparte conocimientos con miles de profesionales y expertos de Cisco de todo el mundo.", en: "Connect, collaborate, and share knowledge with thousands of Cisco professionals and experts worldwide.", pt: "Conecte, colabore e compartilhe conhecimento com milhares de profissionais e especialistas da Cisco em todo o mundo." },
         joinNowButton: { es: "¡Únete Ahora!", en: "Join Now!", pt: "Junte-se Agora!" },
@@ -262,46 +290,101 @@ document.addEventListener('DOMContentLoaded', function() {
         readyToContributeTitle: { es: "¿Listo para Contribuir?", en: "Ready to Contribute?", pt: "Pronto para Contribuir?" },
         readyToContributeSubtitle: { es: "Tu conocimiento y experiencia son valiosos. Aprende cómo puedes participar, ayudar a otros y convertirte en un líder dentro de la Comunidad Cisco.", en: "Your knowledge and experience are valuable. Learn how you can participate, help others, and become a leader within the Cisco Community.", pt: "Seu conhecimento e experiência são valiosos. Aprenda como você pode participar, ajudar outros e se tornar um líder na Comunidade Cisco." },
         learnToContributeButton: { es: "Aprende Cómo Contribuir", en: "Learn How to Contribute", pt: "Aprenda Como Contribuir" },
+
+        // --- NUEVAS TRADUCCIONES PARA DISCUSIONES ACTIVAS ---
+        postedByKey: { es: "Por", en: "By", pt: "Por" },
+        repliesSuffixKey: { es: "Respuestas", en: "Replies", pt: "Respostas" },
+
+        communityTopic1Title: { es: "Mejores prácticas para configurar SD-WAN en sucursales remotas", en: "Best practices for configuring SD-WAN in remote branches", pt: "Melhores práticas para configurar SD-WAN em filiais remotas" },
+        communityTime1: { es: "Hace 2 horas", en: "2 hours ago", pt: "Há 2 horas" },
+
+        communityTopic2Title: { es: "Duda sobre licenciamiento de Cisco DNA Center", en: "Doubt about Cisco DNA Center licensing", pt: "Dúvida sobre licenciamento do Cisco DNA Center" },
+        communityTime2: { es: "Hace 5 horas", en: "5 hours ago", pt: "Há 5 horas" },
+
+        communityTopic3Title: { es: "Experiencias con la migración a Wi-Fi 6E", en: "Experiences with migrating to Wi-Fi 6E", pt: "Experiências com a migração para Wi-Fi 6E" },
+        communityTime3: { es: "Hace 1 día", en: "1 day ago", pt: "Há 1 dia" },
+
+        communityTopic4Title: { es: "Tutorial: Automatización de red con Python y APIs de Meraki", en: "Tutorial: Network automation with Python and Meraki APIs", pt: "Tutorial: Automação de rede com Python e APIs Meraki" },
+        communityTime4: { es: "Hace 2 días", en: "2 days ago", pt: "Há 2 dias" },
     };
+
+    // --- FUNCIONES DE RENDERIZADO DE TEMAS DE COMUNIDAD ---
+    function createTopicElement(topic, lang) {
+        const li = document.createElement('li');
+        li.classList.add('topic-item');
+
+        let avatarStyle = `background-color: ${topic.bgColor || '#0073b1'};`;
+        if (topic.textColor) {
+            avatarStyle += ` color: ${topic.textColor};`;
+        }
+
+        // Obtener traducciones, con fallback a español si no existe la traducción para el idioma actual
+        const title = (translations[topic.titleKey] && translations[topic.titleKey][lang]) || (translations[topic.titleKey] && translations[topic.titleKey]['es']) || topic.titleKey;
+        const time = (translations[topic.timeKey] && translations[topic.timeKey][lang]) || (translations[topic.timeKey] && translations[topic.timeKey]['es']) || topic.timeKey;
+        const postedByText = (translations.postedByKey && translations.postedByKey[lang]) || (translations.postedByKey && translations.postedByKey['es']) || "Por";
+        const repliesSuffixText = (translations.repliesSuffixKey && translations.repliesSuffixKey[lang]) || (translations.repliesSuffixKey && translations.repliesSuffixKey['es']) || "Respuestas";
+
+        li.innerHTML = `
+            <div class="topic-avatar" style="${avatarStyle}">${topic.avatar}</div>
+            <div class="topic-content">
+                <h4><a href="${topic.link}">${title}</a></h4>
+                <div class="topic-meta">
+                    <span>${postedByText} <a href="#">${topic.author}</a></span> •
+                    <span>${time}</span> •
+                    <span class="replies-count">${topic.replies} ${repliesSuffixText}</span>
+                </div>
+            </div>
+        `;
+        return li;
+    }
+
+    function renderAllTopics(topicsListElement, lang) {
+        if (!topicsListElement) return;
+        topicsListElement.innerHTML = ''; // Limpiar temas existentes
+        COMMUNITY_TOPICS_DATA.forEach(topic => {
+            const topicElement = createTopicElement(topic, lang);
+            topicsListElement.appendChild(topicElement);
+        });
+    }
+
 
     function applyTranslations(lang) {
         document.documentElement.lang = lang;
-        
+
         const path = window.location.pathname;
-        const filename = path.substring(path.lastIndexOf('/') + 1);
-        let pageTitleKey = 'pageTitle'; // Default
+        const filename = path.substring(path.lastIndexOf('/') + 1) || "index.html";
+        let pageTitleKey = 'pageTitle';
 
         if (filename === "soluciones.html") pageTitleKey = 'pageTitleSoluciones';
         else if (filename === "partners.html") pageTitleKey = 'pageTitlePartners';
         else if (filename === "soporte.html") pageTitleKey = 'pageTitleSoporte';
         else if (filename === "comunidad.html") pageTitleKey = 'pageTitleComunidad';
-        // Para index.html, se usará 'pageTitle' si no hay otra coincidencia.
 
         const pageTitleElement = document.querySelector('title');
         if (pageTitleElement && translations[pageTitleKey] && translations[pageTitleKey][lang]) {
             pageTitleElement.textContent = translations[pageTitleKey][lang];
         } else if (pageTitleElement && translations['pageTitle'] && translations['pageTitle'][lang]) {
-             pageTitleElement.textContent = translations['pageTitle'][lang]; // Fallback al título genérico de index
+             pageTitleElement.textContent = translations['pageTitle'][lang];
         }
-
 
         document.querySelectorAll('[data-translate-key]').forEach(element => {
             const key = element.getAttribute('data-translate-key');
-            if (translations[key] && translations[key][lang]) {
+            const translationSet = translations[key];
+            if (translationSet) {
                 if (key === 'copyrightText') {
-                    let baseText = translations[key][lang];
-                    const privacyText = (translations.privacyLink && translations.privacyLink[lang]) || translations.privacyLink['es'];
-                    const termsText = (translations.termsLink && translations.termsLink[lang]) || translations.termsLink['es'];
-                    const cookiesText = (translations.cookiesLink && translations.cookiesLink[lang]) || translations.cookiesLink['es'];
+                    let baseText = translationSet[lang] || translationSet['es'];
+                    const privacyText = (translations.privacyLink && (translations.privacyLink[lang] || translations.privacyLink['es']));
+                    const termsText = (translations.termsLink && (translations.termsLink[lang] || translations.termsLink['es']));
+                    const cookiesText = (translations.cookiesLink && (translations.cookiesLink[lang] || translations.cookiesLink['es']));
                     element.innerHTML = `${baseText}<a href="#" data-translate-key="privacyLink">${privacyText}</a> | <a href="#" data-translate-key="termsLink">${termsText}</a> | <a href="#" data-translate-key="cookiesLink">${cookiesText}</a>`;
                 } else {
-                    element.textContent = translations[key][lang];
+                    element.textContent = translationSet[lang] || translationSet['es'];
                 }
             }
         });
 
         const searchTabsButtons = document.querySelectorAll('#navbar-placeholder .search-tabs .tab-btn, main .search-tabs .tab-btn');
-        const searchMainInput = document.getElementById('search-main'); 
+        const searchMainInput = document.getElementById('search-main');
         if (searchTabsButtons.length > 0 && searchMainInput) {
             searchTabsButtons.forEach(tab => {
                 const placeholderKey = `data-placeholder-${lang}`;
@@ -312,14 +395,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
-        
+
         const currentLangBtnText = document.getElementById('selectedLangTextHeader');
         if (currentLangBtnText) {
             if (lang === 'es') currentLangBtnText.textContent = 'ES';
             if (lang === 'en') currentLangBtnText.textContent = 'EN';
             if (lang === 'pt') currentLangBtnText.textContent = 'PT';
         }
-        
+
         const langDropdownLinks = document.querySelectorAll('#languageDropdownHeader a');
         if(langDropdownLinks.length > 0) {
             langDropdownLinks.forEach(a => {
@@ -329,12 +412,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+
+        // Renderizar/Actualizar la lista de temas de comunidad si estamos en esa página
+        if (filename === "comunidad.html") {
+            const topicsListEl = document.getElementById('topicsList');
+            if (topicsListEl) {
+                renderAllTopics(topicsListEl, lang);
+            }
+        }
     }
 
-    function setLanguage(lang) { applyTranslations(lang); localStorage.setItem('selectedLanguage', lang); }
-    function applyInitialLanguage() { const savedLanguage = localStorage.getItem('selectedLanguage'); setLanguage(savedLanguage || 'es'); }
-    
-    function initializeNavbarScripts() { 
+    function setLanguage(lang) {
+        applyTranslations(lang); // applyTranslations ahora se encarga de re-renderizar los temas
+        localStorage.setItem('selectedLanguage', lang);
+    }
+
+    function applyInitialLanguage() {
+        const savedLanguage = localStorage.getItem('selectedLanguage');
+        setLanguage(savedLanguage || 'es');
+    }
+
+    function initializeNavbarScripts() {
         const languageSelectorDropdown = document.getElementById('languageDropdownHeader');
         if (languageSelectorDropdown) {
             languageSelectorDropdown.addEventListener('click', (event) => {
@@ -346,7 +444,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-    function initializeLoginModalScripts() { 
+    function initializeLoginModalScripts() {
         const openLoginModalBtn = document.getElementById('openLoginModalBtnHeader');
         const closeLoginModalBtn = document.getElementById('closeLoginModalBtn');
         const loginModalOverlay = document.getElementById('loginModalOverlay');
@@ -356,12 +454,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (loginModalOverlay) { loginModalOverlay.addEventListener('click', (event) => { if (event.target === loginModalOverlay) { loginModalOverlay.classList.remove('active'); } }); }
         if (loginForm) { loginForm.addEventListener('submit', (event) => { event.preventDefault(); alert('Intento de inicio de sesión (simulado).'); loginModalOverlay.classList.remove('active'); }); }
     }
-    function setActiveNavLink() { 
+    function setActiveNavLink() {
         const currentPage = window.location.pathname.split("/").pop() || "index.html";
-        const navLinks = document.querySelectorAll('#navbar-placeholder nav ul li a'); 
+        const navLinks = document.querySelectorAll('#navbar-placeholder nav ul li a');
         navLinks.forEach(link => {
             const linkPage = (link.getAttribute('href') || "").split("/").pop();
-            link.classList.remove('active'); 
+            link.classList.remove('active');
             if (linkPage === currentPage) {
                 link.classList.add('active');
             }
@@ -381,7 +479,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const placeholderKey = `data-placeholder-${currentLang}`;
                     if (tab.hasAttribute(placeholderKey)) {
                         searchMainInput.placeholder = tab.getAttribute(placeholderKey);
-                    } else { 
+                    } else {
                         searchMainInput.placeholder = searchMainInput.getAttribute('placeholder');
                     }
                 });
@@ -389,23 +487,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- LÓGICA ESPECÍFICA PARA COMUNIDAD.HTML (SI ES NECESARIO) ---
+    // --- LÓGICA ESPECÍFICA PARA COMUNIDAD.HTML (APARTE DE LA TRADUCCIÓN DE LA LISTA) ---
     function initializeCommunityPageScripts() {
-        const topicsListEl = document.getElementById('topicsList');
-        if (!topicsListEl) return; // Salir si no estamos en la página de comunidad o el elemento no existe
-
-        // Aquí iría la lógica de `initialTopicsData`, `renderAllTopics`, `simulateNewLiveActivity`
-        // que te pasé para comunidad.html.
-        // Por brevedad, no la repito aquí, pero deberías moverla a esta función.
-        // Ejemplo:
-        // const initialTopicsData = [ ... ];
-        // let currentTopicsData = [...initialTopicsData];
-        // function createTopicElement(topic) { ... }
-        // function renderAllTopics() { ... }
-        // function simulateNewLiveActivity() { ... }
-        // renderAllTopics();
-        // setInterval(simulateNewLiveActivity, 6000);
-        console.log("Scripts específicos de la página de comunidad inicializados.");
+        // Si tienes otra lógica específica para la página de comunidad que no sea
+        // la renderización de la lista de temas (porque eso ya lo maneja applyTranslations),
+        // la pones aquí. Por ejemplo, manejo de eventos de clic en los temas, etc.
+        // Por ahora, puede estar casi vacía si solo se trataba de renderizar la lista.
+        console.log("Scripts específicos de la página de comunidad (adicionales) inicializados.");
     }
 
 

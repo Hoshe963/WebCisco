@@ -562,3 +562,100 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* WEBCISCO/css/main.css */
+
+/* ... (otros estilos de main.css) ... */
+
+.trending-topics-section {
+    padding: 40px 0;
+    background-color: #fff; /* La sección tiene fondo blanco */
+}
+
+/* Elimina o comenta los estilos de .topics-list-scrollable y .topics-container-wrapper */
+/*
+.topics-container-wrapper { ... }
+.topics-list-scrollable { ... }
+*/
+
+/* Estilos para la lista de temas (ul.topics-list) */
+.topics-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto 30px auto; /* Margen inferior para separar del botón y centrado si se usa max-width */
+    max-width: 800px; /* Esto es como en tu HTML original. Si quieres que ocupe todo el .container, quítalo. */
+                         /* Si lo quitas, los items se alinearán con el título de la sección. */
+}
+
+.topic-item {
+    /* background-color: #fff; Ya no es necesario si la sección es blanca y no hay contenedor intermedio */
+    border-bottom: 1px solid #e0e0e0; /* Borde divisor entre ítems */
+    padding: 20px 0;                  /* Espaciado vertical. Sin padding horizontal aquí. */
+    display: flex;
+    align-items: flex-start;          /* Avatar y contenido alineados arriba */
+}
+.topic-item:last-child {
+    border-bottom: none; /* El último ítem no necesita borde inferior */
+}
+
+.topic-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    /* background-color y color se aplican inline desde JS */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold; /* Para que las iniciales resalten un poco */
+    margin-right: 15px; /* Espacio entre el avatar y el contenido */
+    flex-shrink: 0;    /* Evita que el avatar se encoja */
+    font-size: 16px;   /* Tamaño de las iniciales */
+}
+
+.topic-content {
+    flex-grow: 1; /* El contenido ocupa el espacio restante */
+}
+
+.topic-content h4 {
+    margin: 0 0 6px 0; /* Espacio debajo del título del tema */
+    font-size: 17px;   /* Tamaño del título del tema */
+    font-weight: 500;  /* Peso del título */
+    line-height: 1.4;
+}
+.topic-content h4 a {
+    color: #005073;    /* Color del enlace del título */
+    text-decoration: none;
+}
+.topic-content h4 a:hover {
+    text-decoration: underline;
+}
+
+.topic-meta {
+    font-size: 13px;
+    color: #777;       /* Color del texto meta (tiempo, separadores) */
+    line-height: 1.5;
+}
+/* Estilos para los elementos dentro de .topic-meta */
+.topic-meta span {
+    margin-right: 4px; /* Espacio después de cada span (ej. "Por", "autor", "•") */
+}
+.topic-meta span:last-child {
+    margin-right: 0;
+}
+/* Enlace del autor dentro de topic-meta */
+.topic-meta a {
+    color: #0073b1; /* Color del nombre del autor, más destacado */
+    text-decoration: none;
+    font-weight: 500; /* Que el autor sea un poco más prominente */
+}
+.topic-meta a:hover {
+    text-decoration: underline;
+}
+/* Contador de respuestas */
+.topic-meta .replies-count {
+    color: #0073b1;    /* Color del contador de respuestas */
+    font-weight: 500;
+    margin-left: 4px;  /* Pequeño espacio antes del número de respuestas */
+}
+
+/* ... (resto de tus estilos de comunidad.html como .featured-members-section, etc.) ... */
