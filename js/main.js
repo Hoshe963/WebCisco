@@ -64,12 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
     async function loadAllSharedComponents() {
         const results = await Promise.all([
             loadComponent('includes/navbar.html', 'navbar-placeholder'),
-            loadComponent('includes/login-modal.html', 'login-modal-placeholder')
+        //    loadComponent('includes/login-modal.html', 'login-modal-placeholder')
         ]);
 
         if (results.every(result => result === true)) {
             initializeNavbarScripts();
-            initializeLoginModalScripts();
+         //   initializeLoginModalScripts();
             // applyInitialLanguage se encargará de renderizar los temas con el idioma correcto
             applyInitialLanguage();
             setActiveNavLink();
