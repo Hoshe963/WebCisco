@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function loadAllSharedComponents() {
         const results = await Promise.all([
-            loadComponent('includes/navbar.html', 'navbar-placeholder'),
+            loadComponent('/includes/navbar.html', 'navbar-placeholder'),
         //    loadComponent('includes/login-modal.html', 'login-modal-placeholder')
         ]);
 
