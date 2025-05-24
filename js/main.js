@@ -1,45 +1,30 @@
 // js/main.js
 document.addEventListener('DOMContentLoaded', function() {
 
-    // Datos de los temas de la comunidad (ahora globales dentro de este script)
+    // Datos de los temas de la comunidad
     const COMMUNITY_TOPICS_DATA = [
-        {
-            id: 1, avatar: "JS", bgColor: "#0073b1",
-            titleKey: "communityTopic1Title", // Clave para el título
-            author: "Juan Solano",
-            timeKey: "communityTime1",         // Clave para el tiempo
-            replies: 15, link: "#"
-        },
-        {
-            id: 2, avatar: "LM", bgColor: "#28a745",
-            titleKey: "communityTopic2Title",
-            author: "Liss Mozombite",
-            timeKey: "communityTime2",
-            replies: 8, link: "#"
-        },
-        {
-            id: 3, avatar: "CP", bgColor: "#dc3545",
-            titleKey: "communityTopic3Title",
-            author: "Cesia Pintado",
-            timeKey: "communityTime3",
-            replies: 22, link: "#"
-        },
-        {
-            id: 4, avatar: "ML", bgColor: "#ffc107", textColor: "#333",
-            titleKey: "communityTopic4Title",
-            author: "Mark Landeo",
-            timeKey: "communityTime4",
-            replies: 30, link: "#"
-        }
+        { id: 1, avatar: "JS", bgColor: "#0073b1", titleKey: "communityTopic1Title", author: "Juan Solano", timeKey: "communityTime1", replies: 15, link: "#" },
+        { id: 2, avatar: "LM", bgColor: "#28a745", titleKey: "communityTopic2Title", author: "Liss Mozombite", timeKey: "communityTime2", replies: 8, link: "#" },
+        { id: 3, avatar: "CP", bgColor: "#dc3545", titleKey: "communityTopic3Title", author: "Cesia Pintado", timeKey: "communityTime3", replies: 22, link: "#" },
+        { id: 4, avatar: "ML", bgColor: "#ffc107", textColor: "#333", titleKey: "communityTopic4Title", author: "Mark Landeo", timeKey: "communityTime4", replies: 30, link: "#" }
     ];
 
-    // --- 1. CARGAR COMPONENTES (NAVBAR, FOOTER, MODAL) ---
-    // ... (tu función loadComponent sin cambios) ...
     async function loadComponent(url, placeholderId) {
+        // Asegúrate que la URL sea correcta relativa a la página HTML que llama a este script
+        // Si la página HTML está en una subcarpeta (ej: /login/login.html) y 'includes' está en la raíz,
+        // la URL debería ser '../includes/navbar.html'
+        // Si la página HTML está en la raíz y 'includes' está en la raíz, la URL sería 'includes/navbar.html'
+        // La ruta que pasaste ('/includes/navbar.html') es absoluta desde la raíz del servidor.
+        // Si estás sirviendo desde una subcarpeta del servidor, esto podría fallar.
+        // Es más seguro usar rutas relativas o asegurar que el servidor maneje bien las absolutas.
+
+        // Para simplificar, asumiremos que las páginas HTML están en la raíz o que
+        // el servidor maneja bien las rutas absolutas desde la raíz del sitio.
+        // Si no, necesitarás ajustar la URL en la llamada a loadComponent.
         try {
             const response = await fetch(url);
             if (!response.ok) {
-                console.error(`Error cargando ${url}: ${response.status} ${response.statusText}. Verifica que el archivo exista en la ruta correcta ('${url}') relativa al HTML que lo llama.`);
+                console.error(`Error cargando ${url}: ${response.status} ${response.statusText}. Verifica que el archivo exista en la ruta correcta ('${url}') relativa al HTML que lo llama, o que la ruta absoluta sea correcta desde la raíz del servidor.`);
                 const placeholder = document.getElementById(placeholderId);
                 if(placeholder) placeholder.innerHTML = `<p style="color:red; text-align:center;">Error al cargar componente: ${placeholderId.replace('-placeholder','')}. Revisa la consola.</p>`;
                 return false;
@@ -62,15 +47,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     async function loadAllSharedComponents() {
+        // Determinar la ruta base para los componentes 'includes'
+        // Esto es un poco más robusto si tienes páginas en diferentes niveles de profundidad.
+        let basePath = '';
+        const pathSegments = window.location.pathname.split('/').filter(segment => segment !== '');
+        // Si estamos en una subcarpeta (ej: /login/login.html o /register/register.html), pathSegments.length será 2 o más.
+        // Si estamos en la raíz (ej: /index.html), pathSegments.length será 1.
+        // Si estamos en la raíz y es solo "/", pathSegments.length será 0.
+        if (pathSegments.length > 1) { // Si estamos en una subcarpeta
+            basePath = '../'; // Necesitamos subir un nivel para llegar a 'includes'
+        }
+        // Si las páginas HTML están en la raíz, basePath permanecerá '' y 'includes/navbar.html' funcionará.
+
         const results = await Promise.all([
-            loadComponent('/includes/navbar.html', 'navbar-placeholder'),
-        //    loadComponent('includes/login-modal.html', 'login-modal-placeholder')
+            loadComponent(`${basePath}includes/navbar.html`, 'navbar-placeholder'),
         ]);
 
         if (results.every(result => result === true)) {
             initializeNavbarScripts();
-         //   initializeLoginModalScripts();
-            // applyInitialLanguage se encargará de renderizar los temas con el idioma correcto
             applyInitialLanguage();
             setActiveNavLink();
         } else {
@@ -80,36 +74,35 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeAOS();
 
         const path = window.location.pathname;
-        const onIndexPage = path.includes("index.html") || path === "/" || path.endsWith('/');
-        // La lógica específica de la página de comunidad ahora se maneja principalmente a través de applyTranslations
-        // por lo que initializeCommunityPageScripts podría volverse más ligera o usarse para otras interacciones.
-        if (onIndexPage) {
+        const filename = path.substring(path.lastIndexOf('/') + 1) || "index.html";
+
+
+        if (filename === "index.html") {
              if (document.querySelector('.search-box .search-tabs')) {
                 initializeHeroSearchTabs();
             }
         }
-        // Si necesitas alguna inicialización específica para la página de comunidad que NO sea la traducción
-        // de la lista de temas (porque eso lo hace applyTranslations), la pones aquí.
-        const onComunidadPage = path.includes("comunidad.html");
-        if (onComunidadPage) {
+        if (filename === "comunidad.html") {
             initializeCommunityPageScripts();
         }
     }
 
-    // --- 2. LÓGICA DE TRADUCCIÓN ---
     const translations = {
-        // ... (tus traducciones existentes) ...
         pageTitle: { es: "Cisco Soluciones - Inspirado en LATAM", en: "Cisco Solutions - LATAM Inspired", pt: "Cisco Soluções - Inspirado na LATAM" },
         pageTitleSoluciones: { es: "Cisco - Soluciones", en: "Cisco - Solutions", pt: "Cisco - Soluções" },
         pageTitlePartners: { es: "Cisco - Partners", en: "Cisco - Partners", pt: "Cisco - Parceiros" },
         pageTitleSoporte: { es: "Cisco - Soporte", en: "Cisco - Support", pt: "Cisco - Suporte" },
         pageTitleComunidad: { es: "Cisco - Comunidad", en: "Cisco - Community", pt: "Cisco - Comunidade" },
+        pageTitleLogin: { es: "Cisco - Iniciar Sesión", en: "Cisco - Log In", pt: "Cisco - Entrar" },
+        pageTitleRegister: { es: "Cisco - Registrarse", en: "Cisco - Sign Up", pt: "Cisco - Registrar-se" },
+
         navProducts: { es: "Productos", en: "Products", pt: "Produtos" },
         navSolutions: { es: "Soluciones", en: "Solutions", pt: "Soluções" },
         navSupport: { es: "Soporte", en: "Support", pt: "Suporte" },
         navPartners: { es: "Partners", en: "Partners", pt: "Parceiros" },
         navCommunity: { es: "Comunidad", en: "Community", pt: "Comunidade" },
         loginButton: { es: "Iniciar Sesión", en: "Log In", pt: "Entrar" },
+
         footerAbout: { es: "Acerca de Cisco", en: "About Cisco", pt: "Sobre a Cisco" },
         footerWhoWeAre: { es: "Quiénes Somos", en: "Who We Are", pt: "Quem Somos" },
         footerNews: { es: "Noticias", en: "News", pt: "Notícias" },
@@ -130,13 +123,23 @@ document.addEventListener('DOMContentLoaded', function() {
         privacyLink: { es: "Privacidad", en: "Privacy", pt: "Privacidade" },
         termsLink: { es: "Términos", en: "Terms", pt: "Termos" },
         cookiesLink: { es: "Cookies", en: "Cookies", pt: "Cookies" },
-        loginModalTitle: { es: "Iniciar Sesión", en: "Log In", pt: "Entrar" },
+
         loginEmailLabel: { es: "Correo Electrónico", en: "Email Address", pt: "Endereço de Email" },
         loginPasswordLabel: { es: "Contraseña", en: "Password", pt: "Senha" },
-        loginModalButton: { es: "Ingresar", en: "Log In", pt: "Entrar" },
+        loginModalButton: { es: "Ingresar", en: "Log In", pt: "Entrar" }, // Reutilizada para login.html
         loginNoAccount: { es: "¿No tienes cuenta?", en: "Don't have an account?", pt: "Não tem uma conta?" },
         loginRegisterLink: { es: "Regístrate aquí", en: "Sign up here", pt: "Cadastre-se aqui" },
         loginForgotPasswordLink: { es: "¿Olvidaste tu contraseña?", en: "Forgot your password?", pt: "Esqueceu sua senha?" },
+        loginPageTitle: { es: "Bienvenido de Nuevo", en: "Welcome Back", pt: "Bem-vindo de Volta" }, // Para el H1 en login.html
+
+        // Traducciones para register.html
+        registerPageTitle: { es: "Crear Cuenta", en: "Create Account", pt: "Criar Conta" },
+        registerFullNameLabel: { es: "Nombre Completo", en: "Full Name", pt: "Nome Completo" },
+        registerConfirmPasswordLabel: { es: "Confirmar Contraseña", en: "Confirm Password", pt: "Confirmar Senha" },
+        registerButton: { es: "Registrarse", en: "Sign Up", pt: "Registrar-se" },
+        registerAlreadyAccount: { es: "¿Ya tienes una cuenta?", en: "Already have an account?", pt: "Já tem uma conta?" },
+        registerLoginLink: { es: "Inicia sesión aquí", en: "Log in here", pt: "Faça login aqui" },
+
         learnMoreLink: { es: "Descubre Más →", en: "Learn More →", pt: "Saiba Mais →" },
         readMoreLink: { es: "Leer Más →", en: "Read More →", pt: "Leia Mais →" },
         readFullCaseLink: { es: "Leer Caso Completo →", en: "Read Full Case →", pt: "Ler Caso Completo →" },
