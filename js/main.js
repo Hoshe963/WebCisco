@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const translations = {
-        pageTitle: { es: "Cisco Soluciones - Inspirado en LATAM", en: "Cisco Solutions - LATAM Inspired", pt: "Cisco Soluções - Inspirado na LATAM" },
+        pageTitle: { es: "Cisco-web-upeu", en: "Cisco-web-upeu", pt: "Cisco-web-upeu" },
         pageTitleSoluciones: { es: "Cisco - Soluciones", en: "Cisco - Solutions", pt: "Cisco - Soluções" },
         pageTitlePartners: { es: "Cisco - Partners", en: "Cisco - Partners", pt: "Cisco - Parceiros" },
         pageTitleSoporte: { es: "Cisco - Soporte", en: "Cisco - Support", pt: "Cisco - Suporte" },
