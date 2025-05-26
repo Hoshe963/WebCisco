@@ -194,7 +194,7 @@ nav ul li a.active {
     align-items: center;
 }
 
-.user-actions a, 
+.user-actions a,
 .user-actions .login-btn,
 .user-actions .language-selector button {
     text-decoration: none;
@@ -221,14 +221,14 @@ nav ul li a.active {
     border-radius: 4px;
     font-weight: 500;
     transition: background-color 0.3s ease;
-    border: none; 
-    font-family: inherit; 
-    line-height: normal; 
-    text-decoration: none; 
-    justify-content: center; 
-    -webkit-appearance: none; 
-    -moz-appearance: none; 
-    appearance: none; 
+    border: none;
+    font-family: inherit;
+    line-height: normal;
+    text-decoration: none;
+    justify-content: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 .user-actions .login-btn:hover { background-color: #005073; }
 
@@ -253,8 +253,8 @@ nav ul li a.active {
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    z-index: 1001; 
-    min-width: 120px; 
+    z-index: 1001;
+    min-width: 120px;
     padding: 5px 0;
 }
 .language-selector:hover .language-dropdown,
@@ -310,23 +310,180 @@ nav ul li a.active {
 .section-title { text-align: center; font-size: 30px; margin-bottom: 40px; color: #005073; font-weight: 700; }
 .section-subtitle { text-align: center; font-size: 18px; line-height: 1.7; color: #555; max-width: 800px; margin: -20px auto 40px auto; }
 
-/* Promo Cards Section (Estilos de index.html) */
+/* Promo Cards Section, Customer Success, Latest News (Estilos de index.html) */
 .promo-cards, .customer-success-section, .latest-news-section { padding: 60px 0; }
 .promo-cards, .latest-news-section { background-color: #f9f9f9; }
 .customer-success-section { background-color: #fff; }
-.cards-grid, .success-grid, .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-.card, .success-story-card, .news-card { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; }
-.card:hover, .success-story-card:hover, .news-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
-.card img, .news-card img { width: 100%; height: 200px; object-fit: cover; }
-.card h3, .success-story-card h3, .news-card h3 { font-size: 20px; color: #005073; margin: 15px 20px 10px; font-weight: 700; }
-.card p, .success-story-card p, .news-card p { font-size: 15px; line-height: 1.6; color: #555; margin: 0 20px 15px; flex-grow: 1; }
-.news-card .news-date { font-size: 13px; color: #777; margin: -5px 20px 10px; }
-.card .card-link, .success-story-card .card-link, .news-card .card-link { display: inline-block; margin: 0 20px 20px; color: #0073b1; text-decoration: none; font-weight: 500; align-self: flex-start; }
-.card .card-link:hover, .success-story-card .card-link:hover, .news-card .card-link:hover { text-decoration: underline; color: #005073; }
-.success-story-card .client-logo-placeholder { height: 50px; width: 150px; background-color: #e0e0e0; margin: 20px auto 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; }
-.success-story-card h3 { text-align: center; }
+
+.cards-grid, .success-grid, .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.card, .success-story-card, .news-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+.card:hover, .success-story-card:hover, .news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.card img, .news-card img { /* Aplicable a .promo-cards .card img y .latest-news-section .news-card img */
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card h3, .success-story-card h3, .news-card h3 {
+    font-size: 20px;
+    color: #005073;
+    margin: 15px 20px 10px;
+    font-weight: 700;
+}
+
+.card p, .success-story-card p, .news-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #555;
+    margin: 0 20px 15px;
+    flex-grow: 1;
+}
+
+.card .card-link, .success-story-card .card-link, .news-card .card-link {
+    display: inline-block;
+    margin: 0 20px 20px;
+    color: #0073b1;
+    text-decoration: none;
+    font-weight: 500;
+    align-self: flex-start;
+}
+.card .card-link:hover, .success-story-card .card-link:hover, .news-card .card-link:hover {
+    text-decoration: underline;
+    color: #005073;
+}
+
+/* Específicos de News Card */
+.news-card .news-date {
+    font-size: 13px;
+    color: #777;
+    margin: -5px 20px 10px; /* Ajuste para que esté debajo del título y antes de la descripción */
+}
+
+/* Específicos de Success Story Card */
+.success-story-card .client-logo-placeholder {
+    height: 50px;
+    width: 150px;
+    background-color: #e0e0e0;
+    margin: 20px auto 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    font-size: 14px;
+}
+.success-story-card h3 { text-align: center; } /* Sobrescribe el align-self de .card h3 si es necesario */
 .success-story-card p { text-align: center; font-style: italic; }
 .success-story-card .card-link { align-self: center; }
+
+
+/* Partners Section (Estilos de index.html y partners.html) */
+.partners-section {
+    padding: 60px 0;
+    background-color: #f9f9f9; /* Fondo ligeramente diferente para la sección de partners en index */
+}
+.partners-section .partners-intro { /* Para la página partners.html */
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #555;
+    max-width: 800px;
+    margin: -20px auto 50px auto;
+}
+.partner-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Ajustado para partners.html */
+    gap: 30px;
+    margin-bottom: 40px;
+}
+/* Estilos para .benefit-card (usado en index.html y partners.html) */
+.benefit-card {
+    background-color: #fff; /* Fondo blanco para la tarjeta */
+    padding: 30px 25px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.benefit-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,80,115,0.1);
+}
+/* Iconos para la sección de partners en index.html */
+.partners-section .benefit-icon { /* Solo para index.html */
+    color: #0073b1;
+    margin-bottom: 15px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.partners-section .benefit-icon svg { /* Solo para index.html */
+    width: 36px;
+    height: 36px;
+    fill: #0073b1;
+}
+/* Avatares para la página partners.html */
+.partners-section .member-avatar-partner {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 20px auto;
+    background-size: cover;
+    background-position: center;
+    border: 4px solid #0073b1;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+/* Rol para la página partners.html */
+.partners-section .benefit-icon-placeholder {
+    font-size: 12px;
+    color: #0073b1;
+    margin-bottom: 5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    background-color: #e6f3f9;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+.benefit-card h4 { /* Común para index y partners */
+    font-size: 20px;
+    color: #004060;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+.benefit-card p { /* Común para index y partners */
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4a4a4a;
+    flex-grow: 1;
+    margin-bottom: 0;
+}
+
 
 /* Partners Section (Estilos de index.html y partners.html) */
 .partners-section { padding: 60px 0; background-color: #fff; }
@@ -344,14 +501,39 @@ nav ul li a.active {
 .btn-secondary { background-color: transparent; color: #0073b1; border: 1px solid #0073b1; }
 .btn-secondary:hover { background-color: #e6f3f9; color: #005073; border-color: #005073; }
 
-/* Estilos específicos de partners.html (si los hubiera, como .member-avatar-partner) */
 .member-avatar-partner { width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 15px; background-color: #ccc; background-size: cover; background-position: center; border: 3px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 .benefit-icon-placeholder { font-size: 12px; color: #0073b1; margin-bottom: 5px; font-weight: 700; text-transform: uppercase; }
 
+
+
+
+
+/* === Estilos Hero para Soluciones y Soporte === */
+.solutions-hero, .support-hero {
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+.solutions-hero h1, .support-hero h1 {
+    font-size: 40px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+.solutions-hero p, .support-hero p {
+    font-size: 20px;
+    max-width: 750px;
+    margin: 0 auto 30px auto;
+    opacity: 0.95;
+    font-weight: 300;
+}
+
 /* Estilos específicos de soluciones.html */
-.solutions-hero { background-color: #005073; color: white; padding: 60px 0; text-align: center; }
-.solutions-hero h1 { font-size: 38px; margin-bottom: 15px; font-weight: 700; }
-.solutions-hero p { font-size: 18px; max-width: 700px; margin: 0 auto 20px auto; opacity: 0.9; font-weight: 300; }
+.solutions-hero {
+    background-image: linear-gradient(rgba(0, 64, 96, 0.7), rgba(0, 40, 60, 0.85)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80');
+}
 .solution-categories { padding: 40px 0; background-color: #f9f9f9; }
 .solutions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
 .solution-card { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; align-items: center; }
@@ -362,6 +544,7 @@ nav ul li a.active {
 .solution-card p { font-size: 15px; line-height: 1.6; color: #555; flex-grow: 1; margin-bottom: 20px; }
 .solution-card .btn-learn-more { display: inline-block; padding: 10px 20px; background-color: transparent; color: #0073b1; border: 1px solid #0073b1; border-radius: 4px; text-decoration: none; font-weight: 500; transition: background-color 0.3s ease, color 0.3s ease; }
 .solution-card .btn-learn-more:hover { background-color: #0073b1; color: #fff; }
+
 .featured-solutions { padding: 40px 0; background-color: #fff; }
 .featured-solution-item { display: flex; flex-wrap: wrap; align-items: center; gap: 30px; margin-bottom: 40px; padding: 20px; border-radius: 8px; background-color: #f9f9f9; }
 .featured-solution-item:last-child { margin-bottom: 0; }
@@ -373,6 +556,7 @@ nav ul li a.active {
 .featured-content p { font-size: 16px; line-height: 1.7; margin-bottom: 20px; }
 .featured-content .btn-primary { background-color: #0073b1; color: #fff; border: 1px solid #0073b1; padding: 12px 25px; font-size: 16px; font-weight: 500; border-radius: 4px; text-decoration: none; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; display: inline-block; }
 .featured-content .btn-primary:hover { background-color: #005073; border-color: #005073; }
+
 .cta-section { padding: 60px 0; background-color: #005073; color: #fff; text-align: center; }
 .cta-section h2 { font-size: 28px; margin-bottom: 15px; }
 .cta-section p { font-size: 18px; margin-bottom: 30px; opacity: 0.9; max-width: 600px; margin-left: auto; margin-right: auto; }
@@ -383,29 +567,119 @@ nav ul li a.active {
 .cta-buttons .btn-secondary:hover { background-color: rgba(255,255,255,0.1); }
 
 /* Estilos específicos de soporte.html */
-.support-hero { background-color: #0073b1; color: white; padding: 60px 0; text-align: center; }
-.support-hero h1 { font-size: 38px; margin-bottom: 15px; font-weight: 700; }
-.support-hero p { font-size: 18px; max-width: 700px; margin: 0 auto 20px auto; opacity: 0.9; font-weight: 300; }
-.support-hero .search-box-support { max-width: 600px; margin: 30px auto 0; background-color: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; }
-.support-hero .search-box-support input[type="text"] { width: calc(100% - 110px); padding: 12px; border: 1px solid #fff; border-radius: 4px 0 0 4px; box-sizing: border-box; font-size: 15px; background-color: #fff; color: #333; }
-.support-hero .search-box-support button { width: 100px; padding: 12px; background-color: #005073; color: white; border: 1px solid #005073; border-radius: 0 4px 4px 0; cursor: pointer; font-size: 15px; font-weight: 500; transition: background-color 0.3s ease; vertical-align: top; }
-.support-hero .search-box-support button:hover { background-color: #003f5a; }
+.support-hero {
+    background-image: linear-gradient(rgba(0, 80, 115, 0.75), rgba(0, 50, 80, 0.9)), url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80');
+}
+
+/* === ESTILOS ACTUALIZADOS PARA EL BUSCADOR DE SOPORTE (SIN CONTENEDOR VISIBLE) === */
+.support-hero .search-box-support {
+    max-width: 700px;
+    margin: 40px auto 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.support-hero .search-box-support input[type="text"] {
+    flex-grow: 1;
+    padding: 14px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    outline: none;
+}
+.support-hero .search-box-support input[type="text"]::placeholder {
+    color: #666;
+    opacity: 1;
+}
+.support-hero .search-box-support input[type="text"]:focus {
+    border-color: #fff;
+    background-color: #fff;
+}
+
+.support-hero .search-box-support button {
+    padding: 14px 30px;
+    background-color: #0073b1;
+    color: white;
+    border: 1px solid #0073b1;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    white-space: nowrap;
+}
+.support-hero .search-box-support button:hover {
+    background-color: #005073;
+    border-color: #005073;
+}
+/* === FIN ESTILOS ACTUALIZADOS PARA EL BUSCADOR DE SOPORTE === */
+
+
 .quick-help-section { padding: 40px 0; background-color: #f9f9f9; }
-.help-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-.help-card { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; align-items: center; }
-.help-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-.help-icon { margin-bottom: 15px; color: #0073b1; }
-.help-icon svg { width: 40px; height: 40px; fill: currentColor; }
-.help-card h3 { font-size: 20px; color: #005073; margin-bottom: 10px; font-weight: 500; }
-.help-card p { font-size: 14px; line-height: 1.6; color: #555; flex-grow: 1; margin-bottom: 15px; }
-.help-card .btn-link { color: #0073b1; text-decoration: none; font-weight: 500; }
-.help-card .btn-link:hover { text-decoration: underline; color: #005073; }
+
+.help-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+.help-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.help-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+.help-icon {
+    margin-bottom: 15px;
+    color: #0073b1;
+}
+.help-icon svg {
+    width: 40px;
+    height: 40px;
+    fill: currentColor;
+}
+.help-card h3 {
+    font-size: 20px;
+    color: #005073;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+.help-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+    flex-grow: 1;
+    margin-bottom: 15px;
+}
+.help-card .btn-link {
+    color: #0073b1;
+    text-decoration: none;
+    font-weight: 500;
+}
+.help-card .btn-link:hover {
+    text-decoration: underline;
+    color: #005073;
+}
+
 .popular-resources { padding: 40px 0; background-color: #fff; }
 .resource-list { list-style: none; padding: 0; max-width: 700px; margin: 0 auto; }
 .resource-list li { margin-bottom: 15px; padding: 15px; background-color: #f9f9f9; border-radius: 4px; border-left: 4px solid #0073b1; }
 .resource-list li a { text-decoration: none; color: #005073; font-weight: 500; font-size: 16px; display: block; }
 .resource-list li a:hover { color: #003f5a; }
 .resource-list li span { display: block; font-size: 13px; color: #777; margin-top: 5px; }
+
 .contact-support-section { padding: 60px 0; background-color: #e6f3f9; text-align: center; }
 .contact-support-section h2 { margin-top: 0; }
 .contact-support-section p { font-size: 18px; color: #333; max-width: 600px; margin: 0 auto 30px auto; }
@@ -416,6 +690,7 @@ nav ul li a.active {
 .community-hero p { font-size: 20px; max-width: 750px; margin: 0 auto 30px auto; opacity: 0.9; font-weight: 300; }
 .community-hero .btn-join { background-color: #ffc107; color: #333; padding: 14px 30px; font-size: 18px; font-weight: 700; border-radius: 50px; text-decoration: none; transition: background-color 0.3s ease, transform 0.2s ease; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
 .community-hero .btn-join:hover { background-color: #ffca2c; transform: translateY(-2px); }
+
 .join-conversation-section { padding: 40px 0; background-color: #f9f9f9; }
 .conversation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
 .conversation-card { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; }
@@ -426,36 +701,23 @@ nav ul li a.active {
 .conversation-card p { font-size: 15px; line-height: 1.6; color: #555; flex-grow: 1; margin-bottom: 20px; }
 .conversation-card .btn-explore { color: #0073b1; text-decoration: none; font-weight: 700; align-self: flex-start; }
 .conversation-card .btn-explore:hover { text-decoration: underline; color: #005073; }
+
 .trending-topics-section { padding: 40px 0; background-color: #fff; }
-.topics-container { max-height: 500px; overflow-y: auto; padding-right: 10px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9; }
-.topics-list { list-style: none; padding: 0; margin: 0; }
-.topic-item { background-color: #fff; border-bottom: 1px solid #e8e8e8; padding: 15px; transition: background-color 0.3s ease; }
+.topics-list { list-style: none; padding: 0; margin: 0 auto 30px auto; max-width: 800px; }
+.topic-item { border-bottom: 1px solid #e0e0e0; padding: 20px 0; display: flex; align-items: flex-start; }
 .topic-item:last-child { border-bottom: none; }
-.topic-item:hover { background-color: #f0f8ff; }
-.topic-main { display: flex; align-items: flex-start; cursor: pointer; }
-.topic-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: #0073b1; color: white; display: flex; align-items: center; justify-content: center; font-weight: 500; margin-right: 15px; flex-shrink: 0; }
+.topic-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; flex-shrink: 0; font-size: 16px; }
 .topic-content { flex-grow: 1; }
-.topic-content h4 { margin:0 0 5px 0; }
-.topic-content h4 a { font-size: 17px; color: #005073; text-decoration: none; font-weight: 500; }
+.topic-content h4 { margin: 0 0 6px 0; font-size: 17px; font-weight: 500; line-height: 1.4; }
+.topic-content h4 a { color: #005073; text-decoration: none; }
 .topic-content h4 a:hover { text-decoration: underline; }
-.topic-meta { font-size: 13px; color: #777; }
-.topic-meta span { margin-right: 10px; }
-.topic-meta .replies-count { color: #0073b1; font-weight: 500; }
-.topic-expand-icon { margin-left: 10px; font-size: 1em; color: #0073b1; transition: transform 0.3s ease; padding: 5px; }
-.topic-item.expanded .topic-expand-icon { transform: rotate(90deg); }
-.topic-replies { margin-left: 55px; padding-top: 10px; margin-top: 10px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding-top 0.4s ease-out, margin-top 0.4s ease-out; }
-.topic-item.expanded .topic-replies { max-height: 500px; border-top: 1px dashed #ddd; }
-.reply-item { display: flex; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
-.reply-item:last-child { border-bottom: none; }
-.reply-avatar { width: 30px; height: 30px; border-radius: 50%; background-color: #6c757d; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8em; margin-right: 10px; flex-shrink: 0; }
-.reply-content p { margin: 0 0 5px 0; font-size: 14px; line-height: 1.5; color: #444; }
-.reply-meta { font-size: 12px; color: #888; }
-.add-reply-form { margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0; }
-.add-reply-form textarea { width: calc(100% - 24px); padding: 10px; border: 1px solid #ccc; border-radius: 4px; min-height: 60px; font-family: inherit; font-size: 14px; margin-bottom: 10px; resize: vertical; }
-.add-reply-form button { background-color: #0073b1; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background-color 0.3s ease; }
-.add-reply-form button:hover { background-color: #005073; }
-.new-item-animation { opacity: 0; transform: translateY(-10px); animation: slideInFade 0.5s ease-out forwards; }
-@keyframes slideInFade { to { opacity: 1; transform: translateY(0); } }
+.topic-meta { font-size: 13px; color: #777; line-height: 1.5; }
+.topic-meta span { margin-right: 4px; }
+.topic-meta span:last-child { margin-right: 0; }
+.topic-meta a { color: #0073b1; text-decoration: none; font-weight: 500; }
+.topic-meta a:hover { text-decoration: underline; }
+.topic-meta .replies-count { color: #0073b1; font-weight: 500; margin-left: 4px; }
+
 .featured-members-section { padding: 40px 0; background-color: #e6f3f9; }
 .members-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
 .member-card { background-color: #fff; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
@@ -463,16 +725,64 @@ nav ul li a.active {
 .member-card h5 { font-size: 16px; color: #005073; margin-bottom: 5px; }
 .member-card .member-title { font-size: 13px; color: #0073b1; margin-bottom: 10px; }
 .member-card .member-stats { font-size: 12px; color: #777; }
+
 .how-to-contribute-section { padding: 60px 0; background-color: #fff; text-align: center; }
 .how-to-contribute-section .btn-primary { margin-top: 20px; }
 
-
-/* Footer */
-/* (Los estilos del footer ya están arriba y son comunes) */
-
-/* Responsive adjustments */
-/* (Las media queries ya están arriba y son comunes) */
-
+/* === ESTILOS PÁGINAS LOGIN Y REGISTRO === */
+.auth-page-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 15px;
+}
+.auth-form-wrapper {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 450px;
+}
+.auth-form-wrapper h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #005073;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+.auth-submit-page-btn {
+    background-color: #0073b1;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+.auth-submit-page-btn:hover {
+    background-color: #005073;
+}
+.auth-page-links {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+.auth-page-links p {
+    margin-bottom: 10px;
+}
+.auth-page-links a {
+    color: #0073b1;
+    text-decoration: none;
+}
+.auth-page-links a:hover {
+    text-decoration: underline;
+}
 
 /* Footer */
 footer {
@@ -480,64 +790,54 @@ footer {
     color: #adb5bd;
     padding: 50px 0 30px;
     font-size: 14px;
-    margin-top: 0; /* Asegúrate de que este valor es el deseado o ajusta si es necesario */
+    margin-top: auto;
 }
-
 .footer-links {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 30px;
     margin-bottom: 40px;
 }
-
 .footer-links h4 {
     color: #fff;
     font-size: 16px;
     margin-bottom: 15px;
     font-weight: 500;
 }
-
 .footer-links ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
 .footer-links ul li a {
     color: #adb5bd;
     text-decoration: none;
     line-height: 2.0;
     transition: color 0.3s ease, padding-left 0.3s ease;
 }
-
 .footer-links ul li a:hover {
     color: #fff;
     padding-left: 5px;
 }
-
 .social-media {
     display: flex;
 }
-
 .social-media a {
-    color: #adb5bd; /* Color del enlace en sí, si tuviera texto */
+    color: #adb5bd;
     margin-right: 15px;
     text-decoration: none;
     display: inline-block;
 }
-
 .social-media a svg {
     width: 20px;
     height: 20px;
-    fill: #adb5bd; /* Color de relleno inicial del SVG */
-    stroke: none; /* Asegura que no haya borde por defecto en el SVG */
+    fill: #adb5bd;
+    stroke: none;
     transition: fill 0.3s ease;
 }
-
 .social-media a:hover svg {
-    fill: #fff; /* Color de relleno del SVG al pasar el ratón */
+    fill: #fff;
 }
-
 .copyright {
     text-align: center;
     padding-top: 30px;
@@ -545,120 +845,70 @@ footer {
     font-size: 13px;
     color: #868e96;
 }
-
 .copyright a {
     color: #adb5bd;
     text-decoration: none;
 }
-
 .copyright a:hover {
     text-decoration: underline;
     color: #fff;
 }
 
-/* Responsive adjustments for footer (del HTML completo) */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .footer-links {
+    header .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    nav {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: flex-start;
+    }
+    nav ul {
+        flex-direction: column;
+        width: 100%;
+    }
+    nav ul li {
+        margin: 8px 0;
+        text-align: left;
+    }
+    .user-actions {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: space-between;
+    }
+    .user-actions a, .user-actions .login-btn, .user-actions .language-selector button {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+    .user-actions .login-btn {
+        margin-right: 0;
+    }
+    .language-dropdown {
+        right: auto;
+        left: 0;
+    }
+
+    .hero h1 { font-size: 32px; }
+    .hero-subtitle { font-size: 16px; }
+    .search-tabs { flex-wrap: wrap; }
+    .search-tabs .tab-btn { margin-bottom: 5px; }
+
+    .cards-grid, .success-grid, .news-grid, .solutions-grid, .partner-benefits-grid, .conversation-grid, .members-grid, .help-grid {
         grid-template-columns: 1fr;
     }
+    .featured-solution-item, .featured-solution-item.reverse {
+        flex-direction: column;
+    }
+    .footer-links {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .footer-links div {
+        margin-bottom: 20px;
+    }
+    .social-media {
+        justify-content: center;
+    }
 }
-
-/* WEBCISCO/css/main.css */
-
-/* ... (otros estilos de main.css) ... */
-
-.trending-topics-section {
-    padding: 40px 0;
-    background-color: #fff; /* La sección tiene fondo blanco */
-}
-
-/* Elimina o comenta los estilos de .topics-list-scrollable y .topics-container-wrapper */
-/*
-.topics-container-wrapper { ... }
-.topics-list-scrollable { ... }
-*/
-
-/* Estilos para la lista de temas (ul.topics-list) */
-.topics-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 auto 30px auto; /* Margen inferior para separar del botón y centrado si se usa max-width */
-    max-width: 800px; /* Esto es como en tu HTML original. Si quieres que ocupe todo el .container, quítalo. */
-                         /* Si lo quitas, los items se alinearán con el título de la sección. */
-}
-
-.topic-item {
-    /* background-color: #fff; Ya no es necesario si la sección es blanca y no hay contenedor intermedio */
-    border-bottom: 1px solid #e0e0e0; /* Borde divisor entre ítems */
-    padding: 20px 0;                  /* Espaciado vertical. Sin padding horizontal aquí. */
-    display: flex;
-    align-items: flex-start;          /* Avatar y contenido alineados arriba */
-}
-.topic-item:last-child {
-    border-bottom: none; /* El último ítem no necesita borde inferior */
-}
-
-.topic-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    /* background-color y color se aplican inline desde JS */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold; /* Para que las iniciales resalten un poco */
-    margin-right: 15px; /* Espacio entre el avatar y el contenido */
-    flex-shrink: 0;    /* Evita que el avatar se encoja */
-    font-size: 16px;   /* Tamaño de las iniciales */
-}
-
-.topic-content {
-    flex-grow: 1; /* El contenido ocupa el espacio restante */
-}
-
-.topic-content h4 {
-    margin: 0 0 6px 0; /* Espacio debajo del título del tema */
-    font-size: 17px;   /* Tamaño del título del tema */
-    font-weight: 500;  /* Peso del título */
-    line-height: 1.4;
-}
-.topic-content h4 a {
-    color: #005073;    /* Color del enlace del título */
-    text-decoration: none;
-}
-.topic-content h4 a:hover {
-    text-decoration: underline;
-}
-
-.topic-meta {
-    font-size: 13px;
-    color: #777;       /* Color del texto meta (tiempo, separadores) */
-    line-height: 1.5;
-}
-/* Estilos para los elementos dentro de .topic-meta */
-.topic-meta span {
-    margin-right: 4px; /* Espacio después de cada span (ej. "Por", "autor", "•") */
-}
-.topic-meta span:last-child {
-    margin-right: 0;
-}
-/* Enlace del autor dentro de topic-meta */
-.topic-meta a {
-    color: #0073b1; /* Color del nombre del autor, más destacado */
-    text-decoration: none;
-    font-weight: 500; /* Que el autor sea un poco más prominente */
-}
-.topic-meta a:hover {
-    text-decoration: underline;
-}
-/* Contador de respuestas */
-.topic-meta .replies-count {
-    color: #0073b1;    /* Color del contador de respuestas */
-    font-weight: 500;
-    margin-left: 4px;  /* Pequeño espacio antes del número de respuestas */
-}
-
-/* ... (resto de tus estilos de comunidad.html como .featured-members-section, etc.) ... */
-
-
-
